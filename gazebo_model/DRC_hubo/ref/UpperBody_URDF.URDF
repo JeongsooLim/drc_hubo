@@ -1,0 +1,794 @@
+<robot
+  name="UpperBody_URDF">
+  <link
+    name="Body_TORSO">
+    <inertial>
+      <origin
+        xyz="-0.041477 -0.7766 -0.057341"
+        rpy="0 0 0" />
+      <mass
+        value="0.95671" />
+      <inertia
+        ixx="0.034536"
+        ixy="-9.6933E-06"
+        ixz="-2.2625E-08"
+        iyy="0.034455"
+        iyz="0.0028072"
+        izz="0.066918" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://UpperBody_URDF/meshes/Body_TORSO.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://UpperBody_URDF/meshes/Body_TORSO.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="Body_LSP">
+    <inertial>
+      <origin
+        xyz="0.1305 -0.87135 0.13179"
+        rpy="0 0 0" />
+      <mass
+        value="0.95671" />
+      <inertia
+        ixx="0.034536"
+        ixy="-9.5253E-06"
+        ixz="1.7965E-06"
+        iyy="0.034563"
+        iyz="-0.0033732"
+        izz="0.066809" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://UpperBody_URDF/meshes/Body_LSP.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://UpperBody_URDF/meshes/Body_LSP.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="LSP"
+    type="revolute">
+    <origin
+      xyz="-0.17198 0.0233 0.104"
+      rpy="1.7595 0 0" />
+    <parent
+      link="Body_TORSO" />
+    <child
+      link="Body_LSP" />
+    <axis
+      xyz="-1 0 0" />
+    <limit
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="Body_LSR">
+    <inertial>
+      <origin
+        xyz="0.242 -0.87135 0.13179"
+        rpy="0 0 0" />
+      <mass
+        value="0.95671" />
+      <inertia
+        ixx="0.034536"
+        ixy="-9.5253E-06"
+        ixz="1.7965E-06"
+        iyy="0.034563"
+        iyz="-0.0033732"
+        izz="0.066809" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://UpperBody_URDF/meshes/Body_LSR.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://UpperBody_URDF/meshes/Body_LSR.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="LSR"
+    type="revolute">
+    <origin
+      xyz="-0.1115 0 0"
+      rpy="-3.3307E-16 0 0" />
+    <parent
+      link="Body_LSP" />
+    <child
+      link="Body_LSR" />
+    <axis
+      xyz="0 -0.18763 -0.98224" />
+    <limit
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="Body_LSY">
+    <inertial>
+      <origin
+        xyz="0.242 -0.82574 0.12308"
+        rpy="0 0 0" />
+      <mass
+        value="0.95671" />
+      <inertia
+        ixx="0.034536"
+        ixy="-9.5253E-06"
+        ixz="1.7965E-06"
+        iyy="0.034563"
+        iyz="-0.0033732"
+        izz="0.066809" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://UpperBody_URDF/meshes/Body_LSY.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://UpperBody_URDF/meshes/Body_LSY.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="LSY"
+    type="revolute">
+    <origin
+      xyz="0 -0.0456107564198806 0.00871267487745103"
+      rpy="-4.71844785465692E-16 0 0" />
+    <parent
+      link="Body_LSR" />
+    <child
+      link="Body_LSY" />
+    <axis
+      xyz="0 -0.982239870484399 0.187629520147528" />
+  </joint>
+  <link
+    name="Body_LEB">
+    <inertial>
+      <origin
+        xyz="0.242 -0.026921 -0.52992"
+        rpy="0 0 0" />
+      <mass
+        value="0.95671" />
+      <inertia
+        ixx="0.034536"
+        ixy="-4.5171E-07"
+        ixz="-9.6828E-06"
+        iyy="0.067114"
+        iyz="-0.0012072"
+        izz="0.034258" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://UpperBody_URDF/meshes/Body_LEB.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://UpperBody_URDF/meshes/Body_LEB.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="LEB"
+    type="revolute">
+    <origin
+      xyz="0 -0.304740318478456 0.0225787818150263"
+      rpy="-1.71059317235552 0 0" />
+    <parent
+      link="Body_LSY" />
+    <child
+      link="Body_LEB" />
+    <axis
+      xyz="-1 0 0" />
+  </joint>
+  <link
+    name="Body_LWY">
+    <inertial>
+      <origin
+        xyz="-0.23848 -0.074802 -0.4339"
+        rpy="0 0 0" />
+      <mass
+        value="0.95671" />
+      <inertia
+        ixx="0.034747"
+        ixy="0.0025937"
+        ixz="-0.00034444"
+        iyy="0.066355"
+        iyz="0.0043616"
+        izz="0.034806" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://UpperBody_URDF/meshes/Body_LWY.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://UpperBody_URDF/meshes/Body_LWY.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="LWY"
+    type="revolute">
+    <origin
+      xyz="-2.00045620784017E-05 -0.0395359447111568 -0.091731358073488"
+      rpy="0.097743063628147 0.00395293780656141 3.06081664055811" />
+    <parent
+      link="Body_LEB" />
+    <child
+      link="Body_LWY" />
+    <axis
+      xyz="0 -0.0489318534495686 -0.998802119400029" />
+  </joint>
+  <link
+    name="Body_LWP">
+    <inertial>
+      <origin
+        xyz="-0.24752 0.049262 -0.17992"
+        rpy="0 0 0" />
+      <mass
+        value="0.95671" />
+      <inertia
+        ixx="0.034697"
+        ixy="0.0020544"
+        ixz="0.0010352"
+        iyy="0.060611"
+        iyz="-0.012982"
+        izz="0.0406" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://UpperBody_URDF/meshes/Body_LWP.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://UpperBody_URDF/meshes/Body_LWP.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="LWP"
+    type="revolute">
+    <origin
+      xyz="0 -0.012059 -0.24615"
+      rpy="-0.58884 -0.04426 0.015827" />
+    <parent
+      link="Body_LWY" />
+    <child
+      link="Body_LWP" />
+    <axis
+      xyz="0.99673 0.080688 -0.0039529" />
+    <limit
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="Body_LWFT">
+    <inertial>
+      <origin
+        xyz="-0.11343 -0.4495 -0.26049"
+        rpy="0 0 0" />
+      <mass
+        value="0.072634" />
+      <inertia
+        ixx="2.345E-05"
+        ixy="4.2877E-07"
+        ixz="-7.1555E-07"
+        iyy="2.8309E-05"
+        iyz="8.1711E-06"
+        izz="3.7048E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://UpperBody_URDF/meshes/Body_LWFT.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://UpperBody_URDF/meshes/Body_LWFT.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="LWFT"
+    type="fixed">
+    <origin
+      xyz="-0.33501 -0.33986 -0.238"
+      rpy="-1.0227 -0.30731 2.7777" />
+    <parent
+      link="Body_LWP" />
+    <child
+      link="Body_LWFT" />
+    <axis
+      xyz="-0.044966 0.51349 -0.85692" />
+  </joint>
+  <link
+    name="Body_RSP">
+    <inertial>
+      <origin
+        xyz="0.1305 -0.85857 0.19866"
+        rpy="0 0 0" />
+      <mass
+        value="0.95671" />
+      <inertia
+        ixx="0.034536"
+        ixy="9.5169E-06"
+        ixz="-1.841E-06"
+        iyy="0.036633"
+        iyz="-0.0085923"
+        izz="0.06474" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://UpperBody_URDF/meshes/Body_RSP.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://UpperBody_URDF/meshes/Body_RSP.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="RSP"
+    type="revolute">
+    <origin
+      xyz="0.0890233586356301 0.023299948461179 0.103999657073127"
+      rpy="1.75954457334435 0 3.14159265358979" />
+    <parent
+      link="Body_TORSO" />
+    <child
+      link="Body_RSP" />
+    <axis
+      xyz="1 0 0" />
+  </joint>
+  <link
+    name="Body_RSR">
+    <inertial>
+      <origin
+        xyz="-0.242 -0.87135 0.13179"
+        rpy="0 0 0" />
+      <mass
+        value="0.95671" />
+      <inertia
+        ixx="0.034536"
+        ixy="-9.5253E-06"
+        ixz="1.7965E-06"
+        iyy="0.034563"
+        iyz="-0.0033732"
+        izz="0.066809" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://UpperBody_URDF/meshes/Body_RSR.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://UpperBody_URDF/meshes/Body_RSR.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="RSR"
+    type="revolute">
+    <origin
+      xyz="-0.111500089498262 0 0"
+      rpy="-2.76409616049088 0 3.14159265358979" />
+    <parent
+      link="Body_RSP" />
+    <child
+      link="Body_RSR" />
+    <axis
+      xyz="0 -0.187629520147528 -0.982239870484399" />
+  </joint>
+  <link
+    name="Body_RSY">
+    <inertial>
+      <origin
+        xyz="-0.242000089497041 -0.825736088440367 0.123077222675451"
+        rpy="0 0 0" />
+      <mass
+        value="0.956707507934605" />
+      <inertia
+        ixx="0.0345355589195335"
+        ixy="-9.52534653677357E-06"
+        ixz="1.79651795106387E-06"
+        iyy="0.0345632004353012"
+        iyz="-0.00337321311695182"
+        izz="0.0668094904654526" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://UpperBody_URDF/meshes/Body_RSY.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://UpperBody_URDF/meshes/Body_RSY.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="RSY"
+    type="revolute">
+    <origin
+      xyz="0 -0.0456107564541491 0.00871267488399086"
+      rpy="-1.30673249998381E-13 0 0" />
+    <parent
+      link="Body_RSR" />
+    <child
+      link="Body_RSY" />
+    <axis
+      xyz="0 -0.982239870484423 0.1876295201474" />
+  </joint>
+  <link
+    name="Body_REB">
+    <inertial>
+      <origin
+        xyz="-0.242 -0.026921 -0.52992"
+        rpy="0 0 0" />
+      <mass
+        value="0.95671" />
+      <inertia
+        ixx="0.034536"
+        ixy="-4.5171E-07"
+        ixz="-9.6828E-06"
+        iyy="0.067114"
+        iyz="-0.0012072"
+        izz="0.034258" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://UpperBody_URDF/meshes/Body_REB.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://UpperBody_URDF/meshes/Body_REB.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="REB"
+    type="revolute">
+    <origin
+      xyz="0 -0.304740318444191 0.0225787818084846"
+      rpy="-1.71059317235528 0 0" />
+    <parent
+      link="Body_RSY" />
+    <child
+      link="Body_REB" />
+    <axis
+      xyz="-1 0 0" />
+  </joint>
+  <link
+    name="Body_RWY">
+    <inertial>
+      <origin
+        xyz="0.24398 -0.035746 -0.43582"
+        rpy="0 0 0" />
+      <mass
+        value="0.95671" />
+      <inertia
+        ixx="0.034747"
+        ixy="0.0025937"
+        ixz="-0.00034444"
+        iyy="0.066355"
+        iyz="0.0043616"
+        izz="0.034806" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://UpperBody_URDF/meshes/Body_RWY.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://UpperBody_URDF/meshes/Body_RWY.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="RWY"
+    type="revolute">
+    <origin
+      xyz="2.00045785005432E-05 -0.0395359632010177 -0.0917317354912642"
+      rpy="0.0977430636282633 0.00395293780657088 3.06081664055811" />
+    <parent
+      link="Body_REB" />
+    <child
+      link="Body_RWY" />
+    <axis
+      xyz="0 -0.0489318534495686 -0.998802119400029" />
+  </joint>
+  <link
+    name="Body_RWP">
+    <inertial>
+      <origin
+        xyz="0.23494 0.088318 -0.18183"
+        rpy="0 0 0" />
+      <mass
+        value="0.95671" />
+      <inertia
+        ixx="0.034697"
+        ixy="0.0020544"
+        ixz="0.0010352"
+        iyy="0.060611"
+        iyz="-0.012982"
+        izz="0.0406" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://UpperBody_URDF/meshes/Body_RWP.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://UpperBody_URDF/meshes/Body_RWP.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="RWP"
+    type="revolute">
+    <origin
+      xyz="0 -0.012058940636672 -0.246148370257058"
+      rpy="-0.588844842392692 -0.0442601545666992 0.0158269145138898" />
+    <parent
+      link="Body_RWY" />
+    <child
+      link="Body_RWP" />
+    <axis
+      xyz="0.996731603935048 0.0806875707911991 -0.00395292763413648" />
+  </joint>
+  <link
+    name="Body_RWFT">
+    <inertial>
+      <origin
+        xyz="-0.18237 -0.48582 -0.27863"
+        rpy="0 0 0" />
+      <mass
+        value="0.072634" />
+      <inertia
+        ixx="2.345E-05"
+        ixy="4.2877E-07"
+        ixz="-7.1555E-07"
+        iyy="2.8309E-05"
+        iyz="8.1711E-06"
+        izz="3.7048E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://UpperBody_URDF/meshes/Body_RWFT.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://UpperBody_URDF/meshes/Body_RWFT.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="RWFT"
+    type="fixed">
+    <origin
+      xyz="-0.41577 -0.34612 -0.23815"
+      rpy="-1.0227 -0.30731 2.7777" />
+    <parent
+      link="Body_RWP" />
+    <child
+      link="Body_RWFT" />
+    <axis
+      xyz="-0.044966 0.51349 -0.85692" />
+  </joint>
+</robot>

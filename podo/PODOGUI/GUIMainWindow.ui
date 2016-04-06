@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>GUIMainWindow</class>
+ <widget class="QMainWindow" name="GUIMainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>680</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>PODO GUI -- Rainbow Robotics</string>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <widget class="QTabWidget" name="MAIN_TAB">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>681</width>
+      <height>611</height>
+     </rect>
+    </property>
+    <property name="currentIndex">
+     <number>-1</number>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>25</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QToolBar" name="mainToolBar">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(202, 203, 210);</string>
+   </property>
+   <property name="movable">
+    <bool>false</bool>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>80</width>
+     <height>80</height>
+    </size>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>LeftToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionLAN"/>
+   <addaction name="actionPODOAL"/>
+   <addaction name="actionDUMMY"/>
+   <addaction name="actionJOINT"/>
+   <addaction name="actionSENSOR"/>
+   <addaction name="actionMODEL"/>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+  <action name="actionLAN">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>../SHARE/GUI/icon/LAN_OFF_BLACK.png</normaloff>
+     <normalon>../SHARE/GUI/icon/LAN_OFF_BLUE.png</normalon>../SHARE/GUI/icon/LAN_OFF_BLACK.png</iconset>
+   </property>
+   <property name="text">
+    <string>LAN Connection</string>
+   </property>
+   <property name="toolTip">
+    <string>LAN Connection</string>
+   </property>
+  </action>
+  <action name="actionPODOAL">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>../SHARE/GUI/icon/MODULE_BLACK.png</normaloff>
+     <normalon>../SHARE/GUI/icon/MODULE_BLUE.png</normalon>../SHARE/GUI/icon/MODULE_BLACK.png</iconset>
+   </property>
+   <property name="text">
+    <string>PODOAL Control</string>
+   </property>
+   <property name="toolTip">
+    <string>PODOAL Control</string>
+   </property>
+  </action>
+  <action name="actionJOINT">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>../SHARE/GUI/icon/JOINT_BLACK.png</normaloff>
+     <normalon>../SHARE/GUI/icon/JOINT_BLUE.png</normalon>../SHARE/GUI/icon/JOINT_BLACK.png</iconset>
+   </property>
+   <property name="text">
+    <string>JOINT Pannel</string>
+   </property>
+   <property name="toolTip">
+    <string>JOINT Pannel</string>
+   </property>
+  </action>
+  <action name="actionSENSOR">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>../SHARE/GUI/icon/SENSOR_BLACK.png</normaloff>
+     <normalon>../SHARE/GUI/icon/SENSOR_BLUE.png</normalon>../SHARE/GUI/icon/SENSOR_BLACK.png</iconset>
+   </property>
+   <property name="text">
+    <string>SENSOR Pannel</string>
+   </property>
+   <property name="toolTip">
+    <string>SENSOR Pannel</string>
+   </property>
+  </action>
+  <action name="actionDUMMY">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </action>
+  <action name="actionMODEL">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>../SHARE/GUI/icon/SIMULATOR_BLACK.png</normaloff>
+     <normalon>../SHARE/GUI/icon/SIMULATOR_BLUE.png</normalon>../SHARE/GUI/icon/SIMULATOR_BLACK.png</iconset>
+   </property>
+   <property name="text">
+    <string>MODEL Pannel</string>
+   </property>
+   <property name="toolTip">
+    <string>MODEL Pannel</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections/>
+</ui>

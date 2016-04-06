@@ -1,0 +1,317 @@
+<robot
+  name="Lower_body2_Left.SLDASM">
+  <link
+    name="Body_LHP">
+    <inertial>
+      <origin
+        xyz="-0.222718256502511 -0.862796322638597 -0.0674315918620529"
+        rpy="0 0 0" />
+      <mass
+        value="0.368977634936247" />
+      <inertia
+        ixx="0.000635369969070956"
+        ixy="3.18351722086674E-14"
+        ixz="2.36461153858457E-14"
+        iyy="0.000353367936931249"
+        iyz="3.29715250689869E-09"
+        izz="0.000353369861389081" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Lower_body2_Left.SLDASM/meshes/Body_LHP.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Lower_body2_Left.SLDASM/meshes/Body_LHP.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="Body_LKN">
+    <inertial>
+      <origin
+        xyz="0.077258 0.72319 -0.11514"
+        rpy="0 0 0" />
+      <mass
+        value="0" />
+      <inertia
+        ixx="0"
+        ixy="0"
+        ixz="0"
+        iyy="0"
+        iyz="0"
+        izz="0" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Lower_body2_Left.SLDASM/meshes/Body_LKN.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Lower_body2_Left.SLDASM/meshes/Body_LKN.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="LKN"
+    type="revolute">
+    <origin
+      xyz="-0.077258 0.024315 -0.7319"
+      rpy="1.7619 0 0" />
+    <parent
+      link="Body_LHP" />
+    <child
+      link="Body_LKN" />
+    <axis
+      xyz="-1 0 0" />
+    <limit
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="Body_LAP">
+    <inertial>
+      <origin
+        xyz="-0.13315 0.22903 -0.050387"
+        rpy="0 0 0" />
+      <mass
+        value="0.36898" />
+      <inertia
+        ixx="0.00063537"
+        ixy="3.1835E-14"
+        ixz="2.3646E-14"
+        iyy="0.00035337"
+        iyz="3.2972E-09"
+        izz="0.00035337" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Lower_body2_Left.SLDASM/meshes/Body_LAP.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Lower_body2_Left.SLDASM/meshes/Body_LAP.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="LAP"
+    type="revolute">
+    <origin
+      xyz="-0.012315 -0.35199 0.0755"
+      rpy="-0.19109 0 0" />
+    <parent
+      link="Body_LKN" />
+    <child
+      link="Body_LAP" />
+    <axis
+      xyz="-1 0 0" />
+    <limit
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="Body_LAR">
+    <inertial>
+      <origin
+        xyz="-0.081241 0.25403 -0.050387"
+        rpy="0 0 0" />
+      <mass
+        value="0.36898" />
+      <inertia
+        ixx="0.00063537"
+        ixy="3.1835E-14"
+        ixz="2.3646E-14"
+        iyy="0.00035337"
+        iyz="3.2972E-09"
+        izz="0.00035337" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Lower_body2_Left.SLDASM/meshes/Body_LAR.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Lower_body2_Left.SLDASM/meshes/Body_LAR.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="LAR"
+    type="revolute">
+    <origin
+      xyz="-0.051904 -0.025 0"
+      rpy="0 0 0" />
+    <parent
+      link="Body_LAP" />
+    <child
+      link="Body_LAR" />
+    <axis
+      xyz="0 0 -1" />
+    <limit
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="Body_LAFT">
+    <inertial>
+      <origin
+        xyz="-0.081241 0.30303 -0.050387"
+        rpy="0 0 0" />
+      <mass
+        value="0.36898" />
+      <inertia
+        ixx="0.00063537"
+        ixy="3.1835E-14"
+        ixz="2.3646E-14"
+        iyy="0.00035337"
+        iyz="3.2972E-09"
+        izz="0.00035337" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Lower_body2_Left.SLDASM/meshes/Body_LAFT.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Lower_body2_Left.SLDASM/meshes/Body_LAFT.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="LAFT"
+    type="fixed">
+    <origin
+      xyz="0 -0.049 0"
+      rpy="0 0 0" />
+    <parent
+      link="Body_LAR" />
+    <child
+      link="Body_LAFT" />
+    <axis
+      xyz="0 1 0" />
+  </joint>
+  <link
+    name="Body_LWL">
+    <inertial>
+      <origin
+        xyz="-4.3143E-13 -5.65E-12 0.019242"
+        rpy="0 0 0" />
+      <mass
+        value="0.36898" />
+      <inertia
+        ixx="0.00035337"
+        ixy="-1.1022E-09"
+        ixz="6.6271E-15"
+        iyy="0.00035337"
+        iyz="-3.9099E-14"
+        izz="0.00063537" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Lower_body2_Left.SLDASM/meshes/Body_LWL.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Lower_body2_Left.SLDASM/meshes/Body_LWL.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="LWL"
+    type="continuous">
+    <origin
+      xyz="-0.12622 -0.1367 -0.01747"
+      rpy="1.5708 -0.95513 -1.5708" />
+    <parent
+      link="Body_LKN" />
+    <child
+      link="Body_LWL" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+</robot>

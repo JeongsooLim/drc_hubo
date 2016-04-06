@@ -1,0 +1,1764 @@
+<robot
+  name="Full_body_final">
+  <link
+    name="Body_TORSO">
+    <inertial>
+      <origin
+        xyz="0.035284 1.0336E-06 -0.42399"
+        rpy="0 0 0" />
+      <mass
+        value="0.95687" />
+      <inertia
+        ixx="0.06681"
+        ixy="-3.173E-08"
+        ixz="-0.0029038"
+        iyy="0.034452"
+        iyz="1.0171E-05"
+        izz="0.03448" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Full_body_final/meshes/Body_TORSO.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Full_body_final/meshes/Body_TORSO.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="Body_LSP">
+    <inertial>
+      <origin
+        xyz="0.035284 -0.242 -0.87989"
+        rpy="0 0 0" />
+      <mass
+        value="0.95687" />
+      <inertia
+        ixx="0.06681"
+        ixy="-3.173E-08"
+        ixz="-0.0029038"
+        iyy="0.034452"
+        iyz="1.0171E-05"
+        izz="0.03448" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Full_body_final/meshes/Body_LSP.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Full_body_final/meshes/Body_LSP.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="LSP"
+    type="revolute">
+    <origin
+      xyz="0 0.242 0.4559"
+      rpy="8.0188E-16 5.0144E-11 -1.2433E-15" />
+    <parent
+      link="Body_TORSO" />
+    <child
+      link="Body_LSP" />
+    <axis
+      xyz="0 1 0" />
+    <limit
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="Body_LSR">
+    <inertial>
+      <origin
+        xyz="0.035284 -0.242 -0.87989"
+        rpy="0 0 0" />
+      <mass
+        value="0.95687" />
+      <inertia
+        ixx="0.06681"
+        ixy="-3.173E-08"
+        ixz="-0.0029038"
+        iyy="0.034452"
+        iyz="1.0171E-05"
+        izz="0.03448" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Full_body_final/meshes/Body_LSR.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Full_body_final/meshes/Body_LSR.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="LSR"
+    type="revolute">
+    <origin
+      xyz="0 0 0"
+      rpy="-1.3581E-15 -5.0143E-11 -1.7313E-12" />
+    <parent
+      link="Body_LSP" />
+    <child
+      link="Body_LSR" />
+    <axis
+      xyz="1 0 0" />
+    <limit
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="Body_LSY">
+    <inertial>
+      <origin
+        xyz="0.035284 -0.242 -0.87969"
+        rpy="0 0 0" />
+      <mass
+        value="0.95687" />
+      <inertia
+        ixx="0.06681"
+        ixy="-3.173E-08"
+        ixz="-0.0029038"
+        iyy="0.034452"
+        iyz="1.0171E-05"
+        izz="0.03448" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Full_body_final/meshes/Body_LSY.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Full_body_final/meshes/Body_LSY.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="LSY"
+    type="revolute">
+    <origin
+      xyz="0 0 -0.0002"
+      rpy="1.2616E-15 -6.6613E-16 1.7322E-12" />
+    <parent
+      link="Body_LSR" />
+    <child
+      link="Body_LSY" />
+    <axis
+      xyz="0 0 -1" />
+    <limit
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="Body_LEB">
+    <inertial>
+      <origin
+        xyz="0.00028371 -0.24202 -0.52989"
+        rpy="0 0 0" />
+      <mass
+        value="0.95687" />
+      <inertia
+        ixx="0.06681"
+        ixy="-3.173E-08"
+        ixz="-0.0029038"
+        iyy="0.034452"
+        iyz="1.0171E-05"
+        izz="0.03448" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Full_body_final/meshes/Body_LEB.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Full_body_final/meshes/Body_LEB.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="LEB"
+    type="revolute">
+    <origin
+      xyz="0.035001 2.0005E-05 -0.3498"
+      rpy="-1.5045E-15 -1.8575E-14 -4.0905E-16" />
+    <parent
+      link="Body_LSY" />
+    <child
+      link="Body_LEB" />
+    <axis
+      xyz="0 -1 0" />
+    <limit
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="Body_LWY">
+    <inertial>
+      <origin
+        xyz="0.035284 -0.24202 -0.18989"
+        rpy="0 0 0" />
+      <mass
+        value="0.95687" />
+      <inertia
+        ixx="0.06681"
+        ixy="-3.173E-08"
+        ixz="-0.0029038"
+        iyy="0.034452"
+        iyz="1.0171E-05"
+        izz="0.03448" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Full_body_final/meshes/Body_LWY.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Full_body_final/meshes/Body_LWY.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="LWY"
+    type="revolute">
+    <origin
+      xyz="-0.035 0 -0.34"
+      rpy="-2.8693E-16 3.6846E-15 4.6208E-16" />
+    <parent
+      link="Body_LEB" />
+    <child
+      link="Body_LWY" />
+    <axis
+      xyz="0 0 -1" />
+    <limit
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="Body_LWP">
+    <inertial>
+      <origin
+        xyz="0.035284 -0.24252 -0.18989"
+        rpy="0 0 0" />
+      <mass
+        value="0.95687" />
+      <inertia
+        ixx="0.06681"
+        ixy="-3.173E-08"
+        ixz="-0.0029038"
+        iyy="0.034452"
+        iyz="1.0171E-05"
+        izz="0.03448" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Full_body_final/meshes/Body_LWP.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Full_body_final/meshes/Body_LWP.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="LWP"
+    type="revolute">
+    <origin
+      xyz="0 0.0005 0"
+      rpy="1.4329E-15 -4.8572E-16 -6.1794E-15" />
+    <parent
+      link="Body_LWY" />
+    <child
+      link="Body_LWP" />
+    <axis
+      xyz="0 -1 0" />
+    <limit
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="Body_LWFT">
+    <inertial>
+      <origin
+        xyz="-1.419E-15 0 -0.01"
+        rpy="0 0 0" />
+      <mass
+        value="0.072634" />
+      <inertia
+        ixx="2.3412E-05"
+        ixy="-1.8622E-21"
+        ixz="-2.6466E-18"
+        iyy="2.3412E-05"
+        iyz="-1.7131E-21"
+        izz="4.1982E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Full_body_final/meshes/Body_LWFT.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Full_body_final/meshes/Body_LWFT.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="LWFT"
+    type="fixed">
+    <origin
+      xyz="0 0 -0.032"
+      rpy="2.3828E-14 -1.4455E-13 1.9195E-15" />
+    <parent
+      link="Body_LWP" />
+    <child
+      link="Body_LWFT" />
+    <axis
+      xyz="0 0 -1" />
+  </joint>
+  <link
+    name="Body_RSP">
+    <inertial>
+      <origin
+        xyz="0.035284 0.242 -0.87989"
+        rpy="0 0 0" />
+      <mass
+        value="0.95687" />
+      <inertia
+        ixx="0.06681"
+        ixy="-3.173E-08"
+        ixz="-0.0029038"
+        iyy="0.034452"
+        iyz="1.0171E-05"
+        izz="0.03448" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Full_body_final/meshes/Body_RSP.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Full_body_final/meshes/Body_RSP.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="RSP"
+    type="revolute">
+    <origin
+      xyz="0 -0.242 0.4559"
+      rpy="-3.2328E-16 -6.7696E-16 -6.2038E-18" />
+    <parent
+      link="Body_TORSO" />
+    <child
+      link="Body_RSP" />
+    <axis
+      xyz="0 -1 0" />
+    <limit
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="Body_RSR">
+    <inertial>
+      <origin
+        xyz="0.035284 0.242 -0.87989"
+        rpy="0 0 0" />
+      <mass
+        value="0.95687" />
+      <inertia
+        ixx="0.06681"
+        ixy="-3.173E-08"
+        ixz="-0.0029038"
+        iyy="0.034452"
+        iyz="1.0171E-05"
+        izz="0.03448" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Full_body_final/meshes/Body_RSR.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Full_body_final/meshes/Body_RSR.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="RSR"
+    type="revolute">
+    <origin
+      xyz="0 0 0"
+      rpy="-4.8787E-17 1.6931E-15 -1.7325E-12" />
+    <parent
+      link="Body_RSP" />
+    <child
+      link="Body_RSR" />
+    <axis
+      xyz="-1 0 0" />
+    <limit
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="Body_RSY">
+    <inertial>
+      <origin
+        xyz="0.035284 0.242 -0.87969"
+        rpy="0 0 0" />
+      <mass
+        value="0.95687" />
+      <inertia
+        ixx="0.06681"
+        ixy="-3.173E-08"
+        ixz="-0.0029038"
+        iyy="0.034452"
+        iyz="1.0171E-05"
+        izz="0.03448" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Full_body_final/meshes/Body_RSY.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Full_body_final/meshes/Body_RSY.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="RSY"
+    type="revolute">
+    <origin
+      xyz="0 0 -0.0002"
+      rpy="-8.6847E-16 -2.1094E-15 1.733E-12" />
+    <parent
+      link="Body_RSR" />
+    <child
+      link="Body_RSY" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="Body_REB">
+    <inertial>
+      <origin
+        xyz="0.00028371 0.24202 -0.52989"
+        rpy="0 0 0" />
+      <mass
+        value="0.95687" />
+      <inertia
+        ixx="0.06681"
+        ixy="-3.173E-08"
+        ixz="-0.0029038"
+        iyy="0.034452"
+        iyz="1.0171E-05"
+        izz="0.03448" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Full_body_final/meshes/Body_REB.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Full_body_final/meshes/Body_REB.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="REB"
+    type="revolute">
+    <origin
+      xyz="0.035001 -2.0005E-05 -0.3498"
+      rpy="3.3743E-16 -1.6501E-14 8.9277E-17" />
+    <parent
+      link="Body_RSY" />
+    <child
+      link="Body_REB" />
+    <axis
+      xyz="0 -1 0" />
+    <limit
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="Body_RWY">
+    <inertial>
+      <origin
+        xyz="0.035284 0.24202 -0.18989"
+        rpy="0 0 0" />
+      <mass
+        value="0.95687" />
+      <inertia
+        ixx="0.06681"
+        ixy="-3.173E-08"
+        ixz="-0.0029038"
+        iyy="0.034452"
+        iyz="1.0171E-05"
+        izz="0.03448" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Full_body_final/meshes/Body_RWY.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Full_body_final/meshes/Body_RWY.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="RWY"
+    type="revolute">
+    <origin
+      xyz="-0.035 0 -0.34"
+      rpy="1.9101E-16 -8.4655E-16 1.4719E-15" />
+    <parent
+      link="Body_REB" />
+    <child
+      link="Body_RWY" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="Body_RWP">
+    <inertial>
+      <origin
+        xyz="0.035284 0.24252 -0.18989"
+        rpy="0 0 0" />
+      <mass
+        value="0.95687" />
+      <inertia
+        ixx="0.06681"
+        ixy="-3.173E-08"
+        ixz="-0.0029038"
+        iyy="0.034452"
+        iyz="1.0171E-05"
+        izz="0.03448" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Full_body_final/meshes/Body_RWP.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Full_body_final/meshes/Body_RWP.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="RWP"
+    type="revolute">
+    <origin
+      xyz="0 -0.0005 0"
+      rpy="6.9562E-16 8.3267E-16 -1.1633E-15" />
+    <parent
+      link="Body_RWY" />
+    <child
+      link="Body_RWP" />
+    <axis
+      xyz="0 -1 0" />
+    <limit
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="Body_RWFT">
+    <inertial>
+      <origin
+        xyz="1.2757E-14 -1.1297E-14 -0.01"
+        rpy="0 0 0" />
+      <mass
+        value="0.072634" />
+      <inertia
+        ixx="2.3412E-05"
+        ixy="8.8441E-21"
+        ixz="-2.465E-20"
+        iyy="2.3412E-05"
+        iyz="5.7918E-21"
+        izz="4.1982E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Full_body_final/meshes/Body_RWFT.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Full_body_final/meshes/Body_RWFT.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="RWFT"
+    type="fixed">
+    <origin
+      xyz="0 0 -0.03255"
+      rpy="-2.6296E-14 -1.2546E-14 -1.1419E-15" />
+    <parent
+      link="Body_RWP" />
+    <child
+      link="Body_RWFT" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+  <link
+    name="Body_WST">
+    <inertial>
+      <origin
+        xyz="1.2178E-15 -3.4001E-16 0.1477"
+        rpy="0 0 0" />
+      <mass
+        value="0.073485" />
+      <inertia
+        ixx="0.00062375"
+        ixy="-1.2817E-19"
+        ixz="-2.1576E-18"
+        iyy="0.00013385"
+        iyz="1.8741E-18"
+        izz="0.00055098" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Full_body_final/meshes/Body_WST.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Full_body_final/meshes/Body_WST.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="WST"
+    type="revolute">
+    <origin
+      xyz="0 0 0"
+      rpy="-2.3486E-15 1.377E-15 8.1825E-15" />
+    <parent
+      link="Body_TORSO" />
+    <child
+      link="Body_WST" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="Body_LHY">
+    <inertial>
+      <origin
+        xyz="0.035284 -0.099999 -0.42399"
+        rpy="0 0 0" />
+      <mass
+        value="0.95687" />
+      <inertia
+        ixx="0.06681"
+        ixy="-3.173E-08"
+        ixz="-0.0029038"
+        iyy="0.034452"
+        iyz="1.0171E-05"
+        izz="0.03448" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Full_body_final/meshes/Body_LHY.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Full_body_final/meshes/Body_LHY.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="LHY"
+    type="revolute">
+    <origin
+      xyz="0 0.1 0"
+      rpy="2.3486E-15 -2.4735E-16 -9.5626E-15" />
+    <parent
+      link="Body_WST" />
+    <child
+      link="Body_LHY" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="Body_LHR">
+    <inertial>
+      <origin
+        xyz="0.035284 -0.099999 -0.42399"
+        rpy="0 0 0" />
+      <mass
+        value="0.95687" />
+      <inertia
+        ixx="0.06681"
+        ixy="-3.173E-08"
+        ixz="-0.0029038"
+        iyy="0.034452"
+        iyz="1.0171E-05"
+        izz="0.03448" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Full_body_final/meshes/Body_LHR.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Full_body_final/meshes/Body_LHR.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="LHR"
+    type="revolute">
+    <origin
+      xyz="0 0 0"
+      rpy="2.2525E-16 1.9845E-16 7.1786E-17" />
+    <parent
+      link="Body_LHY" />
+    <child
+      link="Body_LHR" />
+    <axis
+      xyz="-1 0 0" />
+    <limit
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="Body_LHP">
+    <inertial>
+      <origin
+        xyz="0.0020999 -0.066041 -0.21148"
+        rpy="0 0 0" />
+      <mass
+        value="7.718E-05" />
+      <inertia
+        ixx="2.3141E-07"
+        ixy="6.5972E-12"
+        ixz="-3.0859E-10"
+        iyy="2.3156E-07"
+        iyz="-6.644E-10"
+        izz="1.6468E-10" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Full_body_final/meshes/Body_LHP.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Full_body_final/meshes/Body_LHP.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="LHP"
+    type="revolute">
+    <origin
+      xyz="0 0 0"
+      rpy="1.2158E-15 -1.1763E-16 -2.7528E-16" />
+    <parent
+      link="Body_LHR" />
+    <child
+      link="Body_LHP" />
+    <axis
+      xyz="0 1 0" />
+    <limit
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="Body_LKN">
+    <inertial>
+      <origin
+        xyz="-0.0233 -0.14148 0.7319"
+        rpy="0 0 0" />
+      <mass
+        value="0" />
+      <inertia
+        ixx="0"
+        ixy="0"
+        ixz="0"
+        iyy="0"
+        iyz="0"
+        izz="0" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Full_body_final/meshes/Body_LKN.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Full_body_final/meshes/Body_LKN.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="LKN"
+    type="revolute">
+    <origin
+      xyz="0 0 -0.38"
+      rpy="1.1306E-15 8.3267E-16 -3.1457E-15" />
+    <parent
+      link="Body_LHP" />
+    <child
+      link="Body_LKN" />
+    <axis
+      xyz="0 -1 0" />
+    <limit
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="Body_LWH">
+    <inertial>
+      <origin
+        xyz="-0.010467 -0.17918 0.086008"
+        rpy="0 0 0" />
+      <mass
+        value="0.95687" />
+      <inertia
+        ixx="0.06681"
+        ixy="-3.173E-08"
+        ixz="-0.0029038"
+        iyy="0.034452"
+        iyz="1.0171E-05"
+        izz="0.03448" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Full_body_final/meshes/Body_LWH.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Full_body_final/meshes/Body_LWH.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="LWH"
+    type="continuous">
+    <origin
+      xyz="0.045751 0.079176 -0.13"
+      rpy="2.7507E-16 -8.8818E-16 8.5835E-17" />
+    <parent
+      link="Body_LKN" />
+    <child
+      link="Body_LWH" />
+    <axis
+      xyz="0 1 0" />
+  </joint>
+  <link
+    name="Body_LAP">
+    <inertial>
+      <origin
+        xyz="0.035284 -0.099999 0.31601"
+        rpy="0 0 0" />
+      <mass
+        value="0.95687" />
+      <inertia
+        ixx="0.06681"
+        ixy="-3.173E-08"
+        ixz="-0.0029038"
+        iyy="0.034452"
+        iyz="1.0171E-05"
+        izz="0.03448" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Full_body_final/meshes/Body_LAP.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Full_body_final/meshes/Body_LAP.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="LAP"
+    type="revolute">
+    <origin
+      xyz="0 0 -0.36"
+      rpy="-2.2941E-15 -6.6613E-16 5.5206E-15" />
+    <parent
+      link="Body_LKN" />
+    <child
+      link="Body_LAP" />
+    <axis
+      xyz="0 -1 0" />
+    <limit
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="Body_LAR">
+    <inertial>
+      <origin
+        xyz="0.035284 -0.099999 0.34101"
+        rpy="0 0 0" />
+      <mass
+        value="0.95687" />
+      <inertia
+        ixx="0.06681"
+        ixy="-3.1786E-08"
+        ixz="-0.0029038"
+        iyy="0.034452"
+        iyz="1.0171E-05"
+        izz="0.03448" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Full_body_final/meshes/Body_LAR.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Full_body_final/meshes/Body_LAR.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="LAR"
+    type="revolute">
+    <origin
+      xyz="0 0 -0.025"
+      rpy="5.8299E-13 -1.4879E-15 -2.6184E-15" />
+    <parent
+      link="Body_LAP" />
+    <child
+      link="Body_LAR" />
+    <axis
+      xyz="1 0 0" />
+    <limit
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="Body_LAFT">
+    <inertial>
+      <origin
+        xyz="0.035284 -0.099999 0.39601"
+        rpy="0 0 0" />
+      <mass
+        value="0.95687" />
+      <inertia
+        ixx="0.06681"
+        ixy="-3.1786E-08"
+        ixz="-0.0029038"
+        iyy="0.034452"
+        iyz="1.0171E-05"
+        izz="0.03448" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Full_body_final/meshes/Body_LAFT.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Full_body_final/meshes/Body_LAFT.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="LAFT"
+    type="fixed">
+    <origin
+      xyz="0 0 -0.055"
+      rpy="5.8333E-13 1.2546E-14 -2.936E-15" />
+    <parent
+      link="Body_LAR" />
+    <child
+      link="Body_LAFT" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+  <link
+    name="Body_RHY">
+    <inertial>
+      <origin
+        xyz="0.035284 0.1 -0.42399"
+        rpy="0 0 0" />
+      <mass
+        value="0.95687" />
+      <inertia
+        ixx="0.06681"
+        ixy="-3.1786E-08"
+        ixz="-0.0029038"
+        iyy="0.034452"
+        iyz="1.0171E-05"
+        izz="0.03448" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Full_body_final/meshes/Body_RHY.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Full_body_final/meshes/Body_RHY.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="RHY"
+    type="revolute">
+    <origin
+      xyz="0 -0.1 0"
+      rpy="2.397E-15 4.6327E-16 -8.1718E-15" />
+    <parent
+      link="Body_WST" />
+    <child
+      link="Body_RHY" />
+    <axis
+      xyz="0 0 -1" />
+    <limit
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="Body_RHR">
+    <inertial>
+      <origin
+        xyz="-0.035284 -0.1 -0.42399"
+        rpy="0 0 0" />
+      <mass
+        value="0.95687" />
+      <inertia
+        ixx="0.06681"
+        ixy="-3.1786E-08"
+        ixz="0.0029038"
+        iyy="0.034452"
+        iyz="-1.0171E-05"
+        izz="0.03448" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Full_body_final/meshes/Body_RHR.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Full_body_final/meshes/Body_RHR.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="RHR"
+    type="revolute">
+    <origin
+      xyz="0 0 0"
+      rpy="4.3197E-16 3.4822E-17 3.1416" />
+    <parent
+      link="Body_RHY" />
+    <child
+      link="Body_RHR" />
+    <axis
+      xyz="-1 0 0" />
+    <limit
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="Body_RHP">
+    <inertial>
+      <origin
+        xyz="0.00094043 0.066113 -0.22429"
+        rpy="0 0 0" />
+      <mass
+        value="2.7871E-05" />
+      <inertia
+        ixx="2.3651E-07"
+        ixy="-2.9545E-12"
+        ixz="-2.6163E-10"
+        iyy="2.3653E-07"
+        iyz="7.0464E-10"
+        izz="2.4463E-11" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Full_body_final/meshes/Body_RHP.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Full_body_final/meshes/Body_RHP.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="RHP"
+    type="revolute">
+    <origin
+      xyz="0 0 0"
+      rpy="6.1145E-16 -7.3376E-16 -3.1416" />
+    <parent
+      link="Body_RHR" />
+    <child
+      link="Body_RHP" />
+    <axis
+      xyz="0 -1 0" />
+    <limit
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="Body_RKN">
+    <inertial>
+      <origin
+        xyz="-0.0233 0.058524 0.7319"
+        rpy="0 0 0" />
+      <mass
+        value="0" />
+      <inertia
+        ixx="0"
+        ixy="0"
+        ixz="0"
+        iyy="0"
+        iyz="0"
+        izz="0" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Full_body_final/meshes/Body_RKN.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Full_body_final/meshes/Body_RKN.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="RKN"
+    type="revolute">
+    <origin
+      xyz="0 0 -0.38"
+      rpy="-2.0986E-16 8.1776E-12 1.5979E-15" />
+    <parent
+      link="Body_RHP" />
+    <child
+      link="Body_RKN" />
+    <axis
+      xyz="0 -1 0" />
+    <limit
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="Body_RWH">
+    <inertial>
+      <origin
+        xyz="-0.010467 0.18129 0.086008"
+        rpy="0 0 0" />
+      <mass
+        value="0.95687" />
+      <inertia
+        ixx="0.06681"
+        ixy="-3.1786E-08"
+        ixz="-0.0029038"
+        iyy="0.034452"
+        iyz="1.0171E-05"
+        izz="0.03448" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Full_body_final/meshes/Body_RWH.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Full_body_final/meshes/Body_RWH.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="RWH"
+    type="revolute">
+    <origin
+      xyz="0.045751 -0.081291 -0.13"
+      rpy="2.8536E-16 -8.1837E-12 -1.0744E-16" />
+    <parent
+      link="Body_RKN" />
+    <child
+      link="Body_RWH" />
+    <axis
+      xyz="0 -1 0" />
+    <limit
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="Body_RAP">
+    <inertial>
+      <origin
+        xyz="0.035284 0.1 0.31601"
+        rpy="0 0 0" />
+      <mass
+        value="0.95687" />
+      <inertia
+        ixx="0.06681"
+        ixy="-3.1786E-08"
+        ixz="-0.0029038"
+        iyy="0.034452"
+        iyz="1.0171E-05"
+        izz="0.03448" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Full_body_final/meshes/Body_RAP.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Full_body_final/meshes/Body_RAP.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="RAP"
+    type="revolute">
+    <origin
+      xyz="0 0 -0.36"
+      rpy="-2.9557E-16 -8.1773E-12 -3.8327E-15" />
+    <parent
+      link="Body_RKN" />
+    <child
+      link="Body_RAP" />
+    <axis
+      xyz="0 -1 0" />
+    <limit
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="Body_RAR">
+    <inertial>
+      <origin
+        xyz="0.035284 0.1 0.34101"
+        rpy="0 0 0" />
+      <mass
+        value="0.95687" />
+      <inertia
+        ixx="0.06681"
+        ixy="-3.1786E-08"
+        ixz="-0.0029038"
+        iyy="0.034452"
+        iyz="1.0171E-05"
+        izz="0.03448" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Full_body_final/meshes/Body_RAR.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Full_body_final/meshes/Body_RAR.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="RAR"
+    type="revolute">
+    <origin
+      xyz="0 0 -0.025"
+      rpy="-8.9084E-16 -4.0165E-15 1.106E-15" />
+    <parent
+      link="Body_RAP" />
+    <child
+      link="Body_RAR" />
+    <axis
+      xyz="1 0 0" />
+    <limit
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="Body_RAFT">
+    <inertial>
+      <origin
+        xyz="0.035284 0.1 0.39601"
+        rpy="0 0 0" />
+      <mass
+        value="0.95687" />
+      <inertia
+        ixx="0.06681"
+        ixy="-3.1786E-08"
+        ixz="-0.0029038"
+        iyy="0.034452"
+        iyz="1.0171E-05"
+        izz="0.03448" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Full_body_final/meshes/Body_RAFT.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Full_body_final/meshes/Body_RAFT.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="RAFT"
+    type="fixed">
+    <origin
+      xyz="0 0 -0.055"
+      rpy="1.1618E-12 1.796E-15 2.7197E-16" />
+    <parent
+      link="Body_RAR" />
+    <child
+      link="Body_RAFT" />
+    <axis
+      xyz="0 0 -1" />
+  </joint>
+</robot>

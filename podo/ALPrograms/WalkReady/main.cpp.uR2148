@@ -1,0 +1,931 @@
+/*
+ *	This program is generated from drc-podoal-template.
+ *
+ *	This AL-Process will activated by "PODO_Daemon" with appropriate "AL-Number".
+ *	The AL-Number is determined at Core_config.db file at Share folder.
+ *	And the AL-Process needs this AL-Number as an input parameter.
+ *	So trying to open the AL-Process without any input parameter will terminate the process.
+ *
+ *	Please check your PODO_AL_NAME and Core_Config.db file.
+ *	Actually the PODO_AL_NAME is used for recognizing the certain process and making it unique.
+ *	So the same name of file with different path is allowed if the PODO_AL_NAMEs are different.
+ *	But we recommend you that gather all of your build file in one folder (check the Core_Config.db file).
+ *
+ *	You can change the period of real-time thread by changing "RT_TIMER_PERIOD_MS" as another value in "rt_task_set_periodic".
+ *	Please do not change "RT_TIMER_PERIOD_MS" value in "typedef.h".
+ *	You can also change the priority of the thread by changing 4th parameter of "rt_task_create".
+ *	In this function you need to care about the name of thread (the name should be unique).
+ *
+ *	Please do not change the "RBInitialize" function and fore code of main().
+ *	You may express your idea in while loop of main & real-time thread.
+ *
+ *	Each AL-Process has its own command structure in Shared Memory.
+ *	So, it can have its own command set.
+ *	Make sure that the command set of each AL-process start from over than 100.
+ *	Under the 100 is reserved for common command set.
+ *
+ *	Now, you can do everything what you want..!!
+ *	If you have any question about PODO, feel free to contact us.
+ *	Thank you.
+ *
+ *
+ *
+ *	Jungho Lee		: jungho77@rainbow.re.kr
+ *	Jeongsoo Lim	: yjs0497@kaist.ac.kr
+ *	Okkee Sim		: sim2040@kaist.ac.kr
+ *
+ *	Copy Right 2014 @ Rainbow Co., HuboLab of KAIST
+ *
+ */
+
+
+#include <native/timer.h>
+#include <native/task.h>
+
+#include <QCoreApplication>
+
+#include <iostream>
+#include <string>
+#include <sys/mman.h>
+#include <fcntl.h>
+#include <signal.h>
+#include <errno.h>
+#include <stdio.h>
+#include <unistd.h>
+
+//hyoin
+
+//#include "../../SHARE/Headers/ik_math2.h"
+#include "../../SHARE/Headers/kine_drc_hubo2.h"
+#include "../../SHARE/Headers/ik_math4.h"
+#include "../../SHARE/Headers/kine_drc_hubo4.h"
+#include "../../SHARE/Headers/TaskCommandReturn.h"
+//#include "kine_drc_hubo_tj.h"
+#include "joint.h"
+
+#define PODO_AL_NAME       "WALKREADY"
+
+using namespace std;
+const int RB_SUCCESS = true;
+const int RB_FAIL = false;
+
+// Functions ===========================================
+// Signal handler
+void CatchSignals(int _signal);
+int HasAnyOwnership();
+int AskALNumber(char *alname);
+
+// Real-time thread for control
+void RBTaskThread(void *);
+void RBFlagThread(void *);
+
+// Initialization
+int RBInitialize(void);
+// =====================================================
+
+// Variables ===========================================
+// Shared memory
+pRBCORE_SHM     sharedData;
+pUSER_SHM       userData;
+
+// RT task handler for control
+RT_TASK rtTaskCon;
+RT_TASK rtFlagCon;
+
+// Program variable
+int isTerminated;
+int PODO_NO;
+JointControlClass *joint;
+// =====================================================
+
+// Command Set =========================================
+enum WALKREADYCOMMAND
+{
+    WALKREADY_NO_ACT = 100,
+    WALKREADY_GO_WALKREADYPOS,
+    WALKREADY_GO_HOMEPOS,
+    WALKREADY_WHEELCMD,
+    WALKREADY_INFINITY
+};
+// =====================================================
+
+
+void GotoWalkReadyPos();
+void GotoHomePos();
+void GotoDrillWidePos();
+void GotoWalkReadyPos_with_WST_M180();
+
+void WBIK_PARA_CHANGE();
+
+// Manual CAN for GainOverride
+int	PushCANMessage(MANUAL_CAN MCData);
+int RBJointGainOverride(unsigned int _canch, unsigned int _bno, unsigned int _override1, unsigned int _override2, unsigned int _duration);
+int RBBoardSetSwitchingMode(unsigned int _canch, unsigned int _bno, int _mode);
+int RBenableFrictionCompensation(unsigned int _canch, unsigned int _bno, unsigned int _enable1, unsigned int _enable2);
+int RBindicator(unsigned char number);//0 off n n*100ms on/off -1 on 0x85 0,-1 on off
+// hyoin
+//CKINE_DRC_HUBO_TJ kine_drc_hubo;
+CKINE_DRC_HUBO2 kine_drc_hubo;
+//KINE_DRC_HUBO3 kine_drc_hubo3;
+KINE_DRC_HUBO4 kine_drc_hubo3;
+
+double WBIK_Q0[34] = {0.,};
+double WBIK_Q[34] = {0.,},Qub[34]={0.,};
+
+int infinityTest = false;
+int infinityToggle = 0;
+int infinityCnt = 0;
+
+int main(int argc, char *argv[])
+{
+	// Termination signal ---------------------------------
+	signal(SIGTERM, CatchSignals);   // "kill" from shell
+	signal(SIGINT, CatchSignals);    // Ctrl-c
+	signal(SIGHUP, CatchSignals);    // shell termination
+	signal(SIGKILL, CatchSignals);
+
+	// Block memory swapping ------------------------------
+	mlockall(MCL_CURRENT|MCL_FUTURE);
+
+	// Get PODO No. ---------------------------------------
+	if(argc == 1){
+        FILE_LOG(logERROR) << "No input argument";
+        return 0;
+	}
+	else{
+		QString argStr;
+		argStr.sprintf("%s", argv[1]);
+		PODO_NO = argStr.toInt();
+        cout << endl << endl;
+		cout << "======================================================================" << endl;
+		cout << ">>> Process WalkReady is activated..!!" << endl;
+		cout << ">>> PODO NAME: WALKREADY" << endl;
+		cout << ">>> PODO NO: " << PODO_NO << endl;
+        cout << "======================================================================" << endl;
+	}
+
+
+	// Initialize RBCore -----------------------------------
+    if(RBInitialize() == -1)
+        isTerminated = -1;
+
+
+	// User command cheking --------------------------------
+	while(isTerminated == 0)
+	{
+		usleep(100*1000);
+
+		switch(sharedData->USER_COMMAND[PODO_NO])
+        {
+		case WALKREADY_GO_HOMEPOS:
+			cout << ">>> COMMAND: WALKREADY_GO_HOMEPOS" << endl;
+
+			joint->RefreshToCurrentReference();
+			joint->SetAllMotionOwner();
+			GotoHomePos();
+            RBindicator(10);
+			sharedData->USER_COMMAND[PODO_NO] = WALKREADY_NO_ACT;
+			break;
+		case WALKREADY_GO_WALKREADYPOS:
+			cout << ">>> COMMAND: WALKREADY_GO_WALKREADYPOS" << endl;
+            kine_drc_hubo.C_Torso[1] =0;
+			joint->RefreshToCurrentReference();
+			joint->SetAllMotionOwner();
+            if(sharedData->USER_PARA_INT[PODO_NO][0] == 0){
+                GotoWalkReadyPos();
+                usleep(4000*1000);
+                sharedData->STATE_COMMAND = TCMD_WALKREADY_DONE;
+            }
+            else if(sharedData->USER_PARA_INT[PODO_NO][0] == 2){
+                GotoDrillWidePos();
+                usleep(4000*1000);
+                sharedData->STATE_COMMAND = TCMD_WALKREADY_DONE;
+            }
+            else if(sharedData->USER_PARA_INT[PODO_NO][0] == 3){
+                GotoWalkReadyPos();
+                usleep(4000*1000);
+                sharedData->STATE_COMMAND = TCMD_WALKREADY_DONE;
+            }
+            else if(sharedData->USER_PARA_INT[PODO_NO][0] == 10){
+                GotoWalkReadyPos_with_WST_M180();
+                usleep(5000*1000);
+                //sharedData->STATE_COMMAND = TCMD_WALKREADY_DONE;
+            }
+            else{
+                GotoWalkReadyPos();
+                usleep(4000*1000);
+                sharedData->STATE_COMMAND = TCMD_WALKREADY_DONE;
+            }
+            RBindicator(1);
+            sharedData->USER_COMMAND[PODO_NO] = WALKREADY_NO_ACT;
+			break;
+        case WALKREADY_WHEELCMD:
+            sharedData->USER_COMMAND[PODO_NO] = WALKREADY_NO_ACT;
+            break;
+        case WALKREADY_INFINITY:
+            cout << ">>> COMMAND: WALKREADY_INFINITY" << endl;
+
+            joint->RefreshToCurrentReference();
+            joint->SetAllMotionOwner();
+
+            if(sharedData->USER_PARA_INT[PODO_NO][0] == 1){
+                infinityCnt = 0;
+                infinityToggle = 1;
+                infinityTest = true;
+            }else{
+                infinityToggle = 0;
+                infinityTest = false;
+            }
+            sharedData->USER_COMMAND[PODO_NO] = WALKREADY_NO_ACT;
+            break;
+		default:
+			sharedData->USER_COMMAND[PODO_NO] = WALKREADY_NO_ACT;
+			break;
+		}
+	}
+    FILE_LOG(logERROR) << "Process WalkReady is terminated" << endl;
+	return 0;
+}
+// --------------------------------------------------------------------------------------------- //
+
+
+
+// --------------------------------------------------------------------------------------------- //
+void RBTaskThread(void *)
+{
+	while(isTerminated == 0)
+    {
+        if(infinityTest == true){
+            if(infinityToggle == 1){
+                GotoWalkReadyPos();
+                infinityCnt = 0;
+                infinityToggle = 2;
+            }else if(infinityToggle == 2){
+                infinityCnt++;
+                if(infinityCnt > 4200/5){
+                    infinityToggle = 11;
+                }
+            }else if(infinityToggle == 11){
+                GotoHomePos();
+                infinityCnt = 0;
+                infinityToggle = 12;
+            }else if(infinityToggle == 12){
+                infinityCnt++;
+                if(infinityCnt > 3200/5){
+                    infinityToggle = 1;
+                }
+            }
+        }
+
+        joint->MoveAllJoint();
+        rt_task_suspend(&rtTaskCon);
+	}
+}
+// --------------------------------------------------------------------------------------------- //
+void RBFlagThread(void *)
+{
+    rt_task_set_periodic(NULL, TM_NOW, 300*1000);        // 300 usec
+
+    while(isTerminated == 0)
+    {
+        rt_task_wait_period(NULL);
+
+        if(HasAnyOwnership()){
+            if(sharedData->DaemonReadDoneFlag[PODO_NO] == true){
+                joint->JointUpdate();
+                rt_task_resume(&rtTaskCon);
+            }
+        }
+    }
+}
+// --------------------------------------------------------------------------------------------- //
+
+
+// --------------------------------------------------------------------------------------------- //
+int HasAnyOwnership(){
+    for(int i=0; i<NO_OF_JOINTS; i++){
+        if(sharedData->MotionOwner[MC_ID_CH_Pairs[i].id][MC_ID_CH_Pairs[i].ch] == PODO_NO)
+            return true;
+    }
+    return false;
+}
+// --------------------------------------------------------------------------------------------- //
+int AskALNumber(char *alname){
+    memset(&(sharedData->USER_PARA_CHAR[0][0]), 0, 20);
+    memcpy(&(sharedData->USER_PARA_CHAR[0][0]), alname, strlen(alname));
+    sharedData->USER_COMMAND[0] = REQUEST_AL_NUM;
+    usleep(200*1000);
+    if(sharedData->USER_COMMAND[PODO_NO] == REQUEST_AL_NUM){
+        sharedData->USER_COMMAND[PODO_NO] = 100;        // AL NO ACT
+        return sharedData->USER_PARA_INT[PODO_NO][0];
+    }
+    return -1;
+}
+// --------------------------------------------------------------------------------------------- //
+void CatchSignals(int _signal)
+{
+	switch(_signal)
+	{
+	case SIGHUP:
+	case SIGINT:     // Ctrl-c
+	case SIGTERM:    // "kill" from shell
+	case SIGKILL:
+		isTerminated = -1;
+		break;
+	}
+	usleep(1000*500);
+}
+// --------------------------------------------------------------------------------------------- //
+
+// --------------------------------------------------------------------------------------------- //
+int RBInitialize(void){
+	isTerminated = 0;
+
+    // Core Shared Memory Creation ============================================
+	int shmFD = shm_open(RBCORE_SHM_NAME, O_RDWR, 0666);
+    if(shmFD == -1){
+        FILE_LOG(logERROR) << "Fail to open core shared memory";
+        return -1;
+    }else{
+        if(ftruncate(shmFD, sizeof(RBCORE_SHM)) == -1){
+            FILE_LOG(logERROR) << "Fail to truncate core shared memory";
+            return -1;
+        }else{
+			sharedData = (pRBCORE_SHM)mmap(0, sizeof(RBCORE_SHM), PROT_READ|PROT_WRITE, MAP_SHARED, shmFD, 0);
+            if(sharedData == (void*)-1){
+                FILE_LOG(logERROR) << "Fail to mapping core shared memory";
+                return -1;
+            }
+		}
+    }FILE_LOG(logSUCCESS) << "Core shared memory creation = OK";
+    // =========================================================================
+
+    // User Shared Memory Creation ============================================
+    shmFD = shm_open(USER_SHM_NAME, O_RDWR, 0666);
+    if(shmFD == -1){
+        FILE_LOG(logERROR) << "Fail to open user shared memory";
+        return -1;
+    }else{
+        if(ftruncate(shmFD, sizeof(USER_SHM)) == -1){
+            FILE_LOG(logERROR) << "Fail to truncate user shared memory";
+            return -1;
+        }else{
+            userData = (pUSER_SHM)mmap(0, sizeof(USER_SHM), PROT_READ|PROT_WRITE, MAP_SHARED, shmFD, 0);
+            if(userData == (void*)-1){
+                FILE_LOG(logERROR) << "Fail to mapping user shared memory";
+                return -1;
+            }
+        }
+    }
+    FILE_LOG(logSUCCESS) << "User shared memory creation = OK";
+    // =========================================================================
+
+
+    // Initialize internal joint classes =======================================
+    joint = new JointControlClass(sharedData, PODO_NO);
+    joint->RefreshToCurrentReference();
+    // =========================================================================
+
+
+    // Create and start real-time thread =======================================
+    if(rt_task_create(&rtFlagCon, "WALKREADY_FLAG", 0, 95, T_FPU|T_CPU(3)) == 0){
+        if(rt_task_start(&rtFlagCon, &RBFlagThread, NULL) == 0 ){
+            FILE_LOG(logSUCCESS) << "Flag real-time thread start = OK";
+        }else{
+            FILE_LOG(logERROR) << "Flag real-time thread start = FAIL";
+            return -1;
+        }
+    }else{
+        FILE_LOG(logERROR) << cout << "Fail to create Flag real-time thread";
+        return -1;
+    }
+
+    if(rt_task_create(&rtTaskCon, "WALKREADY_TASK", 0, 90, T_FPU|T_CPU(3)) == 0){
+        if(rt_task_start(&rtTaskCon, &RBTaskThread, NULL) == 0 ){
+            FILE_LOG(logSUCCESS) << "Task real-time thread start = OK";
+        }else{
+            FILE_LOG(logERROR) << "Task real-time thread start = FAIL";
+            return -1;
+        }
+    }else{
+        FILE_LOG(logERROR) << cout << "Fail to create Task real-time thread";
+        return -1;
+    }
+    // =========================================================================
+
+	sharedData->PODO_AL_WORKING[PODO_NO] = ENABLE;
+	return 0;
+}
+// --------------------------------------------------------------------------------------------- //
+
+void WBIK_PARA_CHANGE(){
+    // NONE
+    //hyoin robot
+//    kine_drc_hubo3.C_Torso[0] = -0.035-0.015;
+//    kine_drc_hubo3.C_Torso[1] =  0;
+//    kine_drc_hubo3.m_Torso = 28.6+1;
+//    kine_drc_hubo3.m_RightWrist = 3.7 ;
+//    kine_drc_hubo3.m_LeftWrist = 3.7 ;
+
+    //jungwoo robot
+    kine_drc_hubo3.C_Torso[0] = 0.000941-0.065;
+    kine_drc_hubo3.C_Torso[1] =  0;
+    kine_drc_hubo3.m_Torso = 24.98723;
+    kine_drc_hubo3.m_RightWrist = 4.5;
+    kine_drc_hubo3.m_LeftWrist = 4.5;
+    kine_drc_hubo3.m_Pelvis = 11.867886 +2.;
+    kine_drc_hubo.L_FOOT = 0.113;
+}
+
+void GotoWalkReadyPos(){
+    double postime = 3000.0;
+
+    joint->SetMoveJoint(RSP, 40.0, postime, MOVE_ABSOLUTE);
+    joint->SetMoveJoint(RSR, 10.0, postime, MOVE_ABSOLUTE);
+    joint->SetMoveJoint(RSY, 0.0, postime, MOVE_ABSOLUTE);
+    joint->SetMoveJoint(REB, -130, postime, MOVE_ABSOLUTE);
+    joint->SetMoveJoint(RWY, 0.0, postime, MOVE_ABSOLUTE);
+    joint->SetMoveJoint(RWP, 20.0, postime, MOVE_ABSOLUTE);
+
+    joint->SetMoveJoint(LSP, 40.0, postime, MOVE_ABSOLUTE);
+    joint->SetMoveJoint(LSR, -10.0, postime, MOVE_ABSOLUTE);
+    joint->SetMoveJoint(LSY, 0.0, postime, MOVE_ABSOLUTE);
+    joint->SetMoveJoint(LEB, -130.0, postime, MOVE_ABSOLUTE);
+    joint->SetMoveJoint(LWY, 0.0, postime, MOVE_ABSOLUTE);
+    joint->SetMoveJoint(LWP, 20.0, postime, MOVE_ABSOLUTE);
+//    joint->SetMoveJoint(RSP, 40.0-120, postime, MOVE_ABSOLUTE);
+//    joint->SetMoveJoint(RSR, 10-40.0, postime, MOVE_ABSOLUTE);
+//    joint->SetMoveJoint(RSY, 0.0+90, postime, MOVE_ABSOLUTE);
+//    joint->SetMoveJoint(REB, -130+45, postime, MOVE_ABSOLUTE);
+//    joint->SetMoveJoint(RWY, 0.0, postime, MOVE_ABSOLUTE);
+//    joint->SetMoveJoint(RWP, 20.0, postime, MOVE_ABSOLUTE);
+
+//    joint->SetMoveJoint(LSP, 40.0-120, postime, MOVE_ABSOLUTE);
+//    joint->SetMoveJoint(LSR, -10.0+40, postime, MOVE_ABSOLUTE);
+//    joint->SetMoveJoint(LSY, 0.0-90, postime, MOVE_ABSOLUTE);
+//    joint->SetMoveJoint(LEB, -130.0+45, postime, MOVE_ABSOLUTE);
+//    joint->SetMoveJoint(LWY, 0.0, postime, MOVE_ABSOLUTE);
+//    joint->SetMoveJoint(LWP, 20.0, postime, MOVE_ABSOLUTE);
+
+    joint->SetMoveJoint(WST, 0.0, postime, MOVE_ABSOLUTE);
+//    joint->SetMoveJoint(NKY, 0.0, postime, MOVE_ABSOLUTE);
+//    joint->SetMoveJoint(NK1, 0.0, postime, MOVE_ABSOLUTE);
+//    joint->SetMoveJoint(NK2, 0.0, postime, MOVE_ABSOLUTE);
+
+    joint->SetMoveJoint(RF1, 0.0, postime, MOVE_ABSOLUTE);
+    joint->SetMoveJoint(RF2, 0.0, postime, MOVE_ABSOLUTE);
+//    joint->SetMoveJoint(RF3, 0.0, postime, MOVE_ABSOLUTE);
+    joint->SetMoveJoint(LF1, 0.0, postime, MOVE_ABSOLUTE);
+    joint->SetMoveJoint(LF2, 0.0, postime, MOVE_ABSOLUTE);
+//    joint->SetMoveJoint(LF3, 0.0, postime, MOVE_ABSOLUTE);
+
+    double des_pCOM_3x1[3], des_pPCz, des_qPEL_4x1[4], des_pRF_3x1[3], des_qRF_4x1[4], des_pLF_3x1[3], des_qLF_4x1[4];
+
+    WBIK_PARA_CHANGE();
+
+    des_pCOM_3x1[0] = userData->WalkReadyCOM[0] = 0.0;//0.0237f;
+    des_pCOM_3x1[1] = userData->WalkReadyCOM[1] = 0.0;
+    des_pCOM_3x1[2] = userData->WalkReadyCOM[2] = 0.77;//0.77;// + 0.11;//(61.8kg:0.74)//59//0.8;//71kg
+
+    des_qPEL_4x1[0] = 1.;
+    des_qPEL_4x1[1] = 0.;
+    des_qPEL_4x1[2] = 0.;
+    des_qPEL_4x1[3] = 0.;
+
+    des_pRF_3x1[0] = 0.;
+    des_pRF_3x1[1] = -kine_drc_hubo.L_PEL2PEL/2.;//-0.13;//-kine_drc_hubo.L_PEL2PEL/2;//-0.135;//
+    des_pRF_3x1[2] = 0.;
+
+    des_qRF_4x1[0] = 1.;
+    des_qRF_4x1[1] = 0.;
+    des_qRF_4x1[2] = 0.;
+    des_qRF_4x1[3] = 0.;
+
+    des_pLF_3x1[0] = 0.;
+    des_pLF_3x1[1] = kine_drc_hubo.L_PEL2PEL/2.;//0.13;//kine_drc_hubo.L_PEL2PEL/2;//0.135;//
+    des_pLF_3x1[2] = 0.;
+
+    des_qLF_4x1[0] = 1.;
+    des_qLF_4x1[1] = 0.;
+    des_qLF_4x1[2] = 0.;
+    des_qLF_4x1[3] = 0.;
+
+    Qub[idRSP] = 40.*D2R;
+    Qub[idLSP] = 40.*D2R;
+
+    Qub[idRSR] = 10.*D2R;
+    Qub[idLSR] = -10.*D2R;
+
+    Qub[idRSY] = 0.*D2R;
+    Qub[idLSY] = 0.*D2R;
+
+    Qub[idREB] = -130.*D2R;
+    Qub[idLEB] = -130.*D2R;
+
+    Qub[idRWY] = 0.*D2R;
+    Qub[idLWY] = 0.*D2R;
+
+    Qub[idRWP] = 20.*D2R;
+    Qub[idLWP] = 20.*D2R;
+
+    WBIK_Q0[idRHY] = 0.;
+    WBIK_Q0[idRHR] = -2.78*D2R;
+    WBIK_Q0[idRHP] = -43.9*D2R;
+    WBIK_Q0[idRKN] = 80.58*D2R; //77.4*D2R;
+    WBIK_Q0[idRAP] = -36.68*D2R;
+    WBIK_Q0[idRAR] = 2.78*D2R;
+
+    WBIK_Q0[idLHY] = 0.;
+    WBIK_Q0[idLHR] = 2.78*D2R;
+    WBIK_Q0[idLHP] = -43.9*D2R;
+    WBIK_Q0[idLKN] = 80.58*D2R;//77.4*D2R;
+    WBIK_Q0[idLAP] = -36.68*D2R;
+    WBIK_Q0[idLAR] = -2.78*D2R;
+    WBIK_Q0[idRSP] = 40.*D2R;
+    WBIK_Q0[idLSP] = 40.*D2R;
+
+    WBIK_Q0[idRSR] = 10.*D2R;
+    WBIK_Q0[idLSR] = -10.*D2R;
+
+    WBIK_Q0[idRSY] = 0.*D2R;
+    WBIK_Q0[idLSY] = 0.*D2R;
+
+    WBIK_Q0[idREB] = -130.*D2R;
+    WBIK_Q0[idLEB] = -130.*D2R;
+
+    WBIK_Q0[idRWY] = 0.*D2R;
+    WBIK_Q0[idLWY] = 0.*D2R;
+
+    WBIK_Q0[idRWP] = 20.*D2R;
+    WBIK_Q0[idLWP] = 20.*D2R;
+    WBIK_Q0[idRWY2] = 0;//20.*D2R;
+    WBIK_Q0[idLWY2] = 0;//20.*D2R;
+    WBIK_Q0[idWST] = 0;//-180*D2R;//20.*D2R;
+//    (const double Q_ub_34x1[], const double des_pCOM_3x1[], const double des_qPEL_4x1[],
+//                                const double des_pRF_3x1[], const double des_qRF_4x1[],
+//                                const double des_pLF_3x1[], const double des_qLF_4x1[],
+//                                double Q_return_34x1[]);
+    kine_drc_hubo3.IK_LowerBody_Global(WBIK_Q0,Qub,des_pCOM_3x1, des_qPEL_4x1, des_pRF_3x1, des_qRF_4x1, des_pLF_3x1, des_qLF_4x1,WBIK_Q);
+
+    joint->SetMoveJoint(RHY, WBIK_Q[idRHY]*R2D, postime, MOVE_ABSOLUTE);
+    joint->SetMoveJoint(RHR, WBIK_Q[idRHR]*R2D, postime, MOVE_ABSOLUTE);
+    joint->SetMoveJoint(RHP, WBIK_Q[idRHP]*R2D, postime, MOVE_ABSOLUTE);
+    joint->SetMoveJoint(RKN, WBIK_Q[idRKN]*R2D, postime, MOVE_ABSOLUTE);
+    joint->SetMoveJoint(RAP, WBIK_Q[idRAP]*R2D, postime, MOVE_ABSOLUTE);
+    joint->SetMoveJoint(RAR, WBIK_Q[idRAR]*R2D, postime, MOVE_ABSOLUTE);
+
+    joint->SetMoveJoint(LHY, WBIK_Q[idLHY]*R2D, postime, MOVE_ABSOLUTE);
+    joint->SetMoveJoint(LHR, WBIK_Q[idLHR]*R2D, postime, MOVE_ABSOLUTE);
+    joint->SetMoveJoint(LHP, WBIK_Q[idLHP]*R2D, postime, MOVE_ABSOLUTE);
+    joint->SetMoveJoint(LKN, WBIK_Q[idLKN]*R2D, postime, MOVE_ABSOLUTE);
+    joint->SetMoveJoint(LAP, WBIK_Q[idLAP]*R2D, postime, MOVE_ABSOLUTE);
+    joint->SetMoveJoint(LAR, WBIK_Q[idLAR]*R2D, postime, MOVE_ABSOLUTE);
+
+    double total_mass;
+   double total_lower_mass;
+   total_mass          = kine_drc_hubo.m_Pelvis + kine_drc_hubo.m_Torso + kine_drc_hubo.m_LeftUpperLeg+kine_drc_hubo.m_RightUpperLeg+kine_drc_hubo.m_LeftLowerLeg+kine_drc_hubo.m_RightLowerLeg+kine_drc_hubo.m_LeftFoot+kine_drc_hubo.m_RightFoot+kine_drc_hubo.m_LeftLowerArm+kine_drc_hubo.m_RightLowerArm+kine_drc_hubo.m_LeftUpperArm+kine_drc_hubo.m_RightUpperArm + kine_drc_hubo.m_LeftHand + kine_drc_hubo.m_RightHand + kine_drc_hubo.m_LeftWrist+kine_drc_hubo.m_RightWrist;
+   total_lower_mass    = kine_drc_hubo.m_Pelvis + kine_drc_hubo.m_LeftUpperLeg+kine_drc_hubo.m_RightUpperLeg+kine_drc_hubo.m_LeftLowerLeg+kine_drc_hubo.m_RightLowerLeg+kine_drc_hubo.m_LeftFoot+kine_drc_hubo.m_RightFoot;
+   printf("total lower mass : %f\n",total_lower_mass);
+   printf("total mass : %f\n",total_mass);
+}
+void GotoWalkReadyPos_with_WST_M180(){
+
+    sharedData->STATE_COMMAND = TCMD_TERRAIN_180_WALKREADY_START;
+
+    double postime = 5000.0;
+
+    joint->SetMoveJoint(RSP, 60.0, postime, MOVE_ABSOLUTE);
+    joint->SetMoveJoint(RSR, 5.0, postime, MOVE_ABSOLUTE);
+    joint->SetMoveJoint(RSY, 0.0, postime, MOVE_ABSOLUTE);
+    joint->SetMoveJoint(REB, -120, postime-3000., MOVE_ABSOLUTE);
+    joint->SetMoveJoint(RWY, 0.0, postime, MOVE_ABSOLUTE);
+    joint->SetMoveJoint(RWP, -85.0, postime-3000., MOVE_ABSOLUTE);
+
+    joint->SetMoveJoint(LSP, 60.0, postime, MOVE_ABSOLUTE);
+    joint->SetMoveJoint(LSR, -5.0, postime, MOVE_ABSOLUTE);
+    joint->SetMoveJoint(LSY, 0.0, postime, MOVE_ABSOLUTE);
+    joint->SetMoveJoint(LEB, -120.0, postime-3000., MOVE_ABSOLUTE);
+    joint->SetMoveJoint(LWY, 0.0, postime, MOVE_ABSOLUTE);
+    joint->SetMoveJoint(LWP, -85.0, postime-3000., MOVE_ABSOLUTE);
+
+    joint->SetMoveJoint(WST, -180.0, postime, MOVE_ABSOLUTE);
+//    joint->SetMoveJoint(WST, 0.0, postime, MOVE_ABSOLUTE);
+
+    joint->SetMoveJoint(RF1, 0.0, postime, MOVE_ABSOLUTE);
+    joint->SetMoveJoint(RF2, 0.0, postime, MOVE_ABSOLUTE);
+    joint->SetMoveJoint(LF1, 0.0, postime, MOVE_ABSOLUTE);
+    joint->SetMoveJoint(LF2, 0.0, postime, MOVE_ABSOLUTE);
+
+    double des_pCOM_3x1[3], des_pPCz, des_qPEL_4x1[4], des_pRF_3x1[3], des_qRF_4x1[4], des_pLF_3x1[3], des_qLF_4x1[4];
+
+    WBIK_PARA_CHANGE();
+
+    des_pCOM_3x1[0] = userData->WalkReadyCOM[0] = 0.0;//0.0237f;
+    des_pCOM_3x1[1] = userData->WalkReadyCOM[1] = 0;//-kine_drc_hubo.L_PEL2PEL/2.;
+    des_pCOM_3x1[2] = userData->WalkReadyCOM[2] = 0.77;// + 0.11;//(61.8kg:0.74)//59//0.8;//71kg
+
+    des_qPEL_4x1[0] = 1.;
+    des_qPEL_4x1[1] = 0.;
+    des_qPEL_4x1[2] = 0.;
+    des_qPEL_4x1[3] = 0.;
+
+    des_pRF_3x1[0] = 0.;
+    des_pRF_3x1[1] = -kine_drc_hubo.L_PEL2PEL/2.;//-0.13;//-kine_drc_hubo.L_PEL2PEL/2;//-0.135;//
+    des_pRF_3x1[2] = 0.;
+
+    des_qRF_4x1[0] = 1.;
+    des_qRF_4x1[1] = 0.;
+    des_qRF_4x1[2] = 0.;
+    des_qRF_4x1[3] = 0.;
+
+    des_pLF_3x1[0] = 0.;
+    des_pLF_3x1[1] = kine_drc_hubo.L_PEL2PEL/2.;//0.13;//kine_drc_hubo.L_PEL2PEL/2;//0.135;//
+    des_pLF_3x1[2] = 0;//0.08;
+
+    des_qLF_4x1[0] = 1.;
+    des_qLF_4x1[1] = 0.;
+    des_qLF_4x1[2] = 0.;
+    des_qLF_4x1[3] = 0.;
+
+    Qub[idRSP] = 60.*D2R;//-60.*D2R;
+    Qub[idLSP] = 60.*D2R;//-60.*D2R;
+
+    Qub[idRSR] = 10.*D2R;
+    Qub[idLSR] = -10.*D2R;
+
+    Qub[idRSY] = 0.*D2R;
+    Qub[idLSY] = 0.*D2R;
+
+    Qub[idREB] = -120.*D2R;
+    Qub[idLEB] = -120.*D2R;
+
+    Qub[idRWY] = 0.*D2R;
+    Qub[idLWY] = 0.*D2R;
+
+    Qub[idRWP] = -90.*D2R;
+    Qub[idLWP] = -90.*D2R;
+    Qub[idWST] = -180.*D2R;
+//    Qub[idWST] = 0.*D2R;
+
+    WBIK_Q0[idRHY] = 0.;
+    WBIK_Q0[idRHR] = -2.78*D2R;
+    WBIK_Q0[idRHP] = -43.9*D2R;
+    WBIK_Q0[idRKN] = 80.58*D2R; //77.4*D2R;
+    WBIK_Q0[idRAP] = -36.68*D2R;
+    WBIK_Q0[idRAR] = 2.78*D2R;
+
+    WBIK_Q0[idLHY] = 0.;
+    WBIK_Q0[idLHR] = 2.78*D2R;
+    WBIK_Q0[idLHP] = -43.9*D2R;
+    WBIK_Q0[idLKN] = 80.58*D2R;//77.4*D2R;
+    WBIK_Q0[idLAP] = -36.68*D2R;
+    WBIK_Q0[idLAR] = -2.78*D2R;
+    WBIK_Q0[idRSP] = 40.*D2R;
+    WBIK_Q0[idLSP] = 40.*D2R;
+
+    WBIK_Q0[idRSR] = 10.*D2R;
+    WBIK_Q0[idLSR] = -10.*D2R;
+
+    WBIK_Q0[idRSY] = 0.*D2R;
+    WBIK_Q0[idLSY] = 0.*D2R;
+
+    WBIK_Q0[idREB] = -130.*D2R;
+    WBIK_Q0[idLEB] = -130.*D2R;
+
+    WBIK_Q0[idRWY] = 0.*D2R;
+    WBIK_Q0[idLWY] = 0.*D2R;
+
+    WBIK_Q0[idRWP] = 20.*D2R;
+    WBIK_Q0[idLWP] = 20.*D2R;
+    WBIK_Q0[idRWY2] = 0;//20.*D2R;
+    WBIK_Q0[idLWY2] = 0;//20.*D2R;
+    WBIK_Q0[idWST] = -180*D2R;//20.*D2R;
+//    (const double Q_ub_34x1[], const double des_pCOM_3x1[], const double des_qPEL_4x1[],
+//                                const double des_pRF_3x1[], const double des_qRF_4x1[],
+//                                const double des_pLF_3x1[], const double des_qLF_4x1[],
+//                                double Q_return_34x1[]);
+    kine_drc_hubo3.IK_LowerBody_Global(WBIK_Q0,Qub,des_pCOM_3x1, des_qPEL_4x1, des_pRF_3x1, des_qRF_4x1, des_pLF_3x1, des_qLF_4x1,WBIK_Q);
+
+    joint->SetMoveJoint(RHY, WBIK_Q[idRHY]*R2D, postime, MOVE_ABSOLUTE);
+    joint->SetMoveJoint(RHR, WBIK_Q[idRHR]*R2D, postime, MOVE_ABSOLUTE);
+    joint->SetMoveJoint(RHP, WBIK_Q[idRHP]*R2D, postime, MOVE_ABSOLUTE);
+    joint->SetMoveJoint(RKN, WBIK_Q[idRKN]*R2D, postime, MOVE_ABSOLUTE);
+    joint->SetMoveJoint(RAP, WBIK_Q[idRAP]*R2D, postime, MOVE_ABSOLUTE);
+    joint->SetMoveJoint(RAR, WBIK_Q[idRAR]*R2D, postime, MOVE_ABSOLUTE);
+
+    joint->SetMoveJoint(LHY, WBIK_Q[idLHY]*R2D, postime, MOVE_ABSOLUTE);
+    joint->SetMoveJoint(LHR, WBIK_Q[idLHR]*R2D, postime, MOVE_ABSOLUTE);
+    joint->SetMoveJoint(LHP, WBIK_Q[idLHP]*R2D, postime, MOVE_ABSOLUTE);
+    joint->SetMoveJoint(LKN, WBIK_Q[idLKN]*R2D, postime, MOVE_ABSOLUTE);
+    joint->SetMoveJoint(LAP, WBIK_Q[idLAP]*R2D, postime, MOVE_ABSOLUTE);
+    joint->SetMoveJoint(LAR, WBIK_Q[idLAR]*R2D, postime, MOVE_ABSOLUTE);
+
+    double total_mass;
+   double total_lower_mass;
+   total_mass          = kine_drc_hubo.m_Pelvis + kine_drc_hubo.m_Torso + kine_drc_hubo.m_LeftUpperLeg+kine_drc_hubo.m_RightUpperLeg+kine_drc_hubo.m_LeftLowerLeg+kine_drc_hubo.m_RightLowerLeg+kine_drc_hubo.m_LeftFoot+kine_drc_hubo.m_RightFoot+kine_drc_hubo.m_LeftLowerArm+kine_drc_hubo.m_RightLowerArm+kine_drc_hubo.m_LeftUpperArm+kine_drc_hubo.m_RightUpperArm + kine_drc_hubo.m_LeftHand + kine_drc_hubo.m_RightHand + kine_drc_hubo.m_LeftWrist+kine_drc_hubo.m_RightWrist;
+   total_lower_mass    = kine_drc_hubo.m_Pelvis + kine_drc_hubo.m_LeftUpperLeg+kine_drc_hubo.m_RightUpperLeg+kine_drc_hubo.m_LeftLowerLeg+kine_drc_hubo.m_RightLowerLeg+kine_drc_hubo.m_LeftFoot+kine_drc_hubo.m_RightFoot;
+   printf("total lower mass : %f\n",total_lower_mass);
+   printf("total mass : %f\n",total_mass);
+
+   usleep((postime+15)*1000);
+
+
+
+
+
+   sharedData->STATE_COMMAND = TCMD_TERRAIN_180_WALKREADY_DONE;
+}
+void GotoHomePos(){
+    double postime = 3000.0;
+    for(int i=0; i<NO_OF_JOINTS; i++)
+        joint->SetMoveJoint(i, 0.0, postime, MOVE_ABSOLUTE);
+}
+void GotoDrillWidePos(){
+    double postime = 6000.0;
+
+    joint->SetMoveJoint(RSP, 10.0, postime, MOVE_ABSOLUTE);
+    joint->SetMoveJoint(RSR, -10.0, postime, MOVE_ABSOLUTE);
+    joint->SetMoveJoint(RSY, 0.0, postime, MOVE_ABSOLUTE);
+    joint->SetMoveJoint(REB, -135.0, postime, MOVE_ABSOLUTE);
+    joint->SetMoveJoint(RWY, 0.0, postime, MOVE_ABSOLUTE);
+    joint->SetMoveJoint(RWP, 20.0, postime, MOVE_ABSOLUTE);
+
+//    joint->SetMoveJoint(LSP, 10.0, postime, MOVE_ABSOLUTE);
+//    joint->SetMoveJoint(LSR, 10.0, postime, MOVE_ABSOLUTE);
+//    joint->SetMoveJoint(LSY, 0.0, postime, MOVE_ABSOLUTE);
+//    joint->SetMoveJoint(LEB, -135.0, postime, MOVE_ABSOLUTE);
+//    joint->SetMoveJoint(LWY, 0.0, postime, MOVE_ABSOLUTE);
+//    joint->SetMoveJoint(LWP, 20.0, postime, MOVE_ABSOLUTE);
+
+
+    joint->SetMoveJoint(LSP, 60.0, postime, MOVE_ABSOLUTE);
+    joint->SetMoveJoint(LSR, -10.0, postime, MOVE_ABSOLUTE);
+    joint->SetMoveJoint(LSY, 0.0, postime, MOVE_ABSOLUTE);
+    joint->SetMoveJoint(LEB, -130.0, postime, MOVE_ABSOLUTE);
+    joint->SetMoveJoint(LWY, 0.0, postime, MOVE_ABSOLUTE);
+    joint->SetMoveJoint(LWP, -40.0, postime, MOVE_ABSOLUTE);
+
+    joint->SetMoveJoint(WST, 0.0, postime, MOVE_ABSOLUTE);
+//    joint->SetMoveJoint(NKY, 0.0, postime, MOVE_ABSOLUTE);
+//    joint->SetMoveJoint(NK1, 0.0, postime, MOVE_ABSOLUTE);
+//    joint->SetMoveJoint(NK2, 0.0, postime, MOVE_ABSOLUTE);
+
+    joint->SetMoveJoint(RF1, 0.0, postime, MOVE_ABSOLUTE);
+    joint->SetMoveJoint(RF2, 0.0, postime, MOVE_ABSOLUTE);
+//    joint->SetMoveJoint(RF3, 0.0, postime, MOVE_ABSOLUTE);
+    joint->SetMoveJoint(LF1, 0.0, postime, MOVE_ABSOLUTE);
+    joint->SetMoveJoint(LF2, 0.0, postime, MOVE_ABSOLUTE);
+//    joint->SetMoveJoint(LF3, 0.0, postime, MOVE_ABSOLUTE);
+
+    double des_pCOM_3x1[3], des_pPCz, des_qPEL_4x1[4], des_pRF_3x1[3], des_qRF_4x1[4], des_pLF_3x1[3], des_qLF_4x1[4];
+
+    WBIK_PARA_CHANGE();
+
+
+    //printf("foot mass = %f\n",kine_drc_hubo.m_LEFT_FOOT);
+    //printf ("total mass = %f\n",kine_drc_hubo.m_LEFT_ANKLE*2+kine_drc_hubo.m_LEFT_FOOT*2+kine_drc_hubo.m_LEFT_LOWER_LEG*2+kine_drc_hubo.m_LEFT_UPPER_LEG*2+kine_drc_hubo.m_PELVIS+kine_drc_hubo.m_TORSO+kine_drc_hubo.m_LEFT_HAND*2+kine_drc_hubo.m_LEFT_LOWER_ARM*2+kine_drc_hubo.m_LEFT_UPPER_ARM*2);
+
+
+    des_pCOM_3x1[0] = userData->WalkReadyCOM[0] = 0.0;//0.0237f;
+    des_pCOM_3x1[1] = userData->WalkReadyCOM[1] = 0.0;
+    //des_pCOM_3x1[2] = userData->WalkReadyCOM[2] = 0.71;
+    des_pCOM_3x1[2] = userData->WalkReadyCOM[2] = 0.81;
+    //printf("WR_COM_Z = %f\n",WR_COM_Z);
+    //des_pPCz = 0.63;
+
+    des_qPEL_4x1[0] = 1.;
+    des_qPEL_4x1[1] = 0.;
+    des_qPEL_4x1[2] = 0.;
+    des_qPEL_4x1[3] = 0.;
+
+    des_pRF_3x1[0] = 0.;
+    des_pRF_3x1[1] = -0.2;
+    des_pRF_3x1[2] = 0.;
+
+    des_qRF_4x1[0] = 1.;
+    des_qRF_4x1[1] = 0.;
+    des_qRF_4x1[2] = 0.;
+    des_qRF_4x1[3] = 0.;
+
+    des_pLF_3x1[0] = 0.;
+    des_pLF_3x1[1] = 0.2;
+    des_pLF_3x1[2] = 0.;
+
+    des_qLF_4x1[0] = 1.;
+    des_qLF_4x1[1] = 0.;
+    des_qLF_4x1[2] = 0.;
+    des_qLF_4x1[3] = 0.;
+
+    Qub[idRSP] = 10.*D2R;
+    Qub[idLSP] = 10.*D2R;
+
+    Qub[idRSR] = -10.*D2R;
+    Qub[idLSR] = 10.*D2R;
+
+    Qub[idRSY] = 0.*D2R;
+    Qub[idLSY] = 0.*D2R;
+
+    Qub[idREB] = -135.*D2R;
+    Qub[idLEB] = -135.*D2R;
+
+    Qub[idRWY] = 0.*D2R;
+    Qub[idLWY] = 0.*D2R;
+
+    Qub[idRWP] = 20.*D2R;
+    Qub[idLWP] = 20.*D2R;
+
+    kine_drc_hubo.IK_LowerBody_Global(Qub,des_pCOM_3x1, des_qPEL_4x1, des_pRF_3x1, des_qRF_4x1, des_pLF_3x1, des_qLF_4x1,WBIK_Q);
+
+    joint->SetMoveJoint(RHY, WBIK_Q[idRHY]*R2D, postime, MOVE_ABSOLUTE);
+    joint->SetMoveJoint(RHR, WBIK_Q[idRHR]*R2D, postime, MOVE_ABSOLUTE);
+    joint->SetMoveJoint(RHP, WBIK_Q[idRHP]*R2D, postime, MOVE_ABSOLUTE);
+    joint->SetMoveJoint(RKN, WBIK_Q[idRKN]*R2D, postime, MOVE_ABSOLUTE);
+    joint->SetMoveJoint(RAP, WBIK_Q[idRAP]*R2D, postime, MOVE_ABSOLUTE);
+    joint->SetMoveJoint(RAR, WBIK_Q[idRAR]*R2D, postime, MOVE_ABSOLUTE);
+
+    joint->SetMoveJoint(LHY, WBIK_Q[idLHY]*R2D, postime, MOVE_ABSOLUTE);
+    joint->SetMoveJoint(LHR, WBIK_Q[idLHR]*R2D, postime, MOVE_ABSOLUTE);
+    joint->SetMoveJoint(LHP, WBIK_Q[idLHP]*R2D, postime, MOVE_ABSOLUTE);
+    joint->SetMoveJoint(LKN, WBIK_Q[idLKN]*R2D, postime, MOVE_ABSOLUTE);
+    joint->SetMoveJoint(LAP, WBIK_Q[idLAP]*R2D, postime, MOVE_ABSOLUTE);
+    joint->SetMoveJoint(LAR, WBIK_Q[idLAR]*R2D, postime, MOVE_ABSOLUTE);
+}
+int	PushCANMessage(MANUAL_CAN MCData){
+    for(int i=0; i<MAX_MANUAL_CAN; i++){
+        if(sharedData->ManualCAN[i].status == MANUALCAN_EMPTY){
+            sharedData->ManualCAN[i].status = MANUALCAN_WRITING;
+            sharedData->ManualCAN[i].channel = MCData.channel;
+            sharedData->ManualCAN[i].id = MCData.id;
+            sharedData->ManualCAN[i].dlc = MCData.dlc;
+            for(int j=0; j<MCData.dlc; j++){
+                sharedData->ManualCAN[i].data[j] = MCData.data[j];
+            }
+            sharedData->ManualCAN[i].status = MANUALCAN_NEW;
+            return RB_SUCCESS;
+        }
+    }
+    cout << "Fail to send Manual CAN..!!" << endl;
+    return RB_FAIL;
+}
+
+int RBJointGainOverride(unsigned int _canch, unsigned int _bno, unsigned int _override1, unsigned int _override2, unsigned int _duration){
+    // MsgID                Byte0	Byte1	Byte2	Byte3	Byte4		Byte5
+    // CANID_SEND_CMD		BNO		0x6F	OVER1	OVER2	DURATION	DURATION
+    MANUAL_CAN	MCData;
+
+    MCData.channel = _canch;
+    MCData.id = COMMAND_CANID;
+    MCData.dlc = 6;
+    MCData.data[0] = _bno;
+    MCData.data[1] = 0x6F;
+    MCData.data[2] = _override1;
+    MCData.data[3] = _override2;
+    MCData.data[4] = (_duration & 0xFF);
+    MCData.data[5] = ((_duration>>8) & (0xFF));
+
+    return PushCANMessage(MCData);
+}
+
+int RBBoardSetSwitchingMode(unsigned int _canch, unsigned int _bno, int _mode){
+    // MsgID		Byte0	Byte1	Byte2
+    // CMD_TXDF		BNO		0x13	_mode
+    MANUAL_CAN	MCData;
+
+    MCData.channel = _canch;
+    MCData.id = COMMAND_CANID;
+    MCData.dlc = 3;
+    MCData.data[0] = _bno;
+    MCData.data[1] = 0x13;
+    MCData.data[2] = _mode;
+
+    return PushCANMessage(MCData);
+}
+
+int RBenableFrictionCompensation(unsigned int _canch, unsigned int _bno, unsigned int _enable1, unsigned int _enable2){
+    // MsgID		Byte0	Byte1	Byte2
+    // CMD_TXDF		BNO		0xB1	ENABLE
+    MANUAL_CAN	MCData;
+
+    MCData.channel = _canch;
+    MCData.id = COMMAND_CANID;
+    MCData.dlc = 3;
+    MCData.data[0] = _bno;
+    MCData.data[1] = 0xB1;
+    MCData.data[2] = (_enable1&0x01) | ((_enable2&0x01)<<1);
+
+    return PushCANMessage(MCData);
+}
+
+int RBindicator(unsigned char number)
+{
+    MANUAL_CAN	MCData;
+
+    MCData.channel = 1;
+    MCData.id = COMMAND_CANID;
+    MCData.dlc = 3;
+    MCData.data[0] = 24;
+    MCData.data[1] = 0x84;
+    MCData.data[2] = (unsigned char)number;
+
+    return PushCANMessage(MCData);
+}

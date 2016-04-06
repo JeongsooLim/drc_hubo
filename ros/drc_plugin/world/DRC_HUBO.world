@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+  <sdf version="1.4">
+    <world name="default"> 
+    <gui>
+       <camera name = "user_camera">
+		<pose>1.5 -4 4.8 0 0.8 1.5708 </pose>
+       </camera>
+    </gui>
+
+    <physics type= "ode">
+	<max_step_size>0.001</max_step_size>
+	<real_time_update_rate>1000</real_time_update_rate>
+
+	<simbody>
+	  <contact>
+	    <static_friction>0.98</static_friction>
+	    <dynamic_friction>0.98</dynamic_friction>
+	  </contact>
+	</simbody>
+
+        <ode>
+          <constraints>
+            <contact_max_correcting_vel>0.3</contact_max_correcting_vel>
+            <contact_surface_layer>0.0005</contact_surface_layer>
+          </constraints>
+        </ode>
+
+    </physics>  
+
+
+    <!-- A ground plane -->
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+
+    <!-- A global light source -->
+    <include>
+      <uri>model://sun</uri>
+    </include>
+
+
+    <include>
+      <uri>model://DRC_HOUSE1</uri>
+      <pose>2 0 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://table</uri>
+      <pose>4.114 1.383 -0.405 0 0 1.5708</pose>
+    </include>
+
+    <include>
+      <uri>model://coke_can</uri>
+      <pose>4.413 1.477 0.838 0 0 1.5708</pose>
+    </include>
+
+
+<!--
+    <include>
+      <uri>model://willowgarage</uri>
+    </include>
+-->
+<!--
+    <include>
+      <uri>model://DRC_hubo</uri>
+    </include>
+-->
+
+    </world>
+  </sdf>

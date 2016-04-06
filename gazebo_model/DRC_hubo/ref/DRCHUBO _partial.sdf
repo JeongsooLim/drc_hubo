@@ -1,0 +1,1604 @@
+<sdf version='1.4'>
+  <model name='DRCHUBO'>
+        <pose>0 0 0.9 0 -0 0</pose>
+    <link name='Body_TORSO'>
+      <pose>0 0 0 0 -0 0</pose>
+      <inertial>
+        <pose>0.035284 1.0336e-06 -0.42399 0 -0 0</pose>
+        <mass>20.5214</mass>
+        <inertia>
+          <ixx>1.0207</ixx>
+          <ixy>-1.145e-04</ixy>
+          <ixz>-5.488e-04</ixz>
+          <iyy>0.2114</iyy>
+          <iyz>4.453e-04</iyz>
+          <izz>0.9793</izz>
+        </inertia>
+      </inertial>
+      <collision name='Body_TORSO_collision'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DRCHUBO/meshes/Body_TORSO.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='Body_TORSO_visual'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DRCHUBO/meshes/Body_TORSO.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <velocity_decay>
+        <linear>0</linear>
+        <angular>0</angular>
+      </velocity_decay>
+    </link>
+<!--
+    <joint name='fixed' type='revolute'>
+      <child>Body_TORSO</child>
+      <parent>world</parent>
+      <axis>
+        <xyz>1.2433e-15 1 8.0188e-16</xyz>
+        <limit>
+          <lower>-0</lower>
+          <upper>0</upper>
+          <effort>0</effort>
+          <velocity>0</velocity>
+        </limit>
+        <dynamics/>
+      </axis>
+    </joint>
+-->
+    <link name='Body_LSP'>
+      <pose>0 0.242 0.4559 8.0188e-16 5.0144e-11 -1.2433e-15</pose>
+      <inertial>
+        <pose>0.035284 -0.242 -0.87989 0 -0 0</pose>
+        <mass>0.95687</mass>
+        <inertia>
+          <ixx>0.06681</ixx>
+          <ixy>-3.1786e-08</ixy>
+          <ixz>-0.0029038</ixz>
+          <iyy>0.034452</iyy>
+          <iyz>1.0171e-05</iyz>
+          <izz>0.03448</izz>
+        </inertia>
+      </inertial>
+      <collision name='Body_LSP_collision'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DRCHUBO/meshes/Body_LSP.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='Body_LSP_visual'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DRCHUBO/meshes/Body_LSP.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <velocity_decay>
+        <linear>0</linear>
+        <angular>0</angular>
+      </velocity_decay>
+    </link>
+    <joint name='LSP' type='revolute'>
+      <child>Body_LSP</child>
+      <parent>Body_TORSO</parent>
+      <axis>
+        <xyz>1.2433e-15 1 8.0188e-16</xyz>
+        <limit>
+          <lower>-3.14</lower>
+          <upper>3.14</upper>
+          <effort>100000</effort>
+          <velocity>0</velocity>
+        </limit>
+        <dynamics/>
+      </axis>
+    </joint>
+    <link name='Body_LSR'>
+      <pose>0 0.242 0.4559 -5.4232e-16 1e-15 -1.73244e-12</pose>
+      <inertial>
+        <pose>0.035284 -0.242 -0.87989 0 -0 0</pose>
+        <mass>0.95687</mass>
+        <inertia>
+          <ixx>0.06681</ixx>
+          <ixy>-3.1786e-08</ixy>
+          <ixz>-0.0029038</ixz>
+          <iyy>0.034452</iyy>
+          <iyz>1.0171e-05</iyz>
+          <izz>0.03448</izz>
+        </inertia>
+      </inertial>
+      <collision name='Body_LSR_collision'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DRCHUBO/meshes/Body_LSR.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='Body_LSR_visual'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DRCHUBO/meshes/Body_LSR.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <velocity_decay>
+        <linear>0</linear>
+        <angular>0</angular>
+      </velocity_decay>
+    </link>
+    <joint name='LSR' type='revolute'>
+      <child>Body_LSR</child>
+      <parent>Body_LSP</parent>
+      <axis>
+        <xyz>1 -1.73244e-12 -1e-15</xyz>
+        <limit>
+          <lower>-3.14</lower>
+          <upper>3.14</upper>
+          <effort>100000</effort>
+          <velocity>0</velocity>
+        </limit>
+        <dynamics/>
+      </axis>
+    </joint>
+    <link name='Body_LSY'>
+      <pose>-2e-19 0.242 0.4557 5.0138e-16 6.3918e-16 -4.433e-16</pose>
+      <inertial>
+        <pose>0.035284 -0.242 -0.87969 0 -0 0</pose>
+        <mass>0.95687</mass>
+        <inertia>
+          <ixx>0.06681</ixx>
+          <ixy>-3.1786e-08</ixy>
+          <ixz>-0.0029038</ixz>
+          <iyy>0.034452</iyy>
+          <iyz>1.0171e-05</iyz>
+          <izz>0.03448</izz>
+        </inertia>
+      </inertial>
+      <collision name='Body_LSY_collision'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DRCHUBO/meshes/Body_LSY.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='Body_LSY_visual'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DRCHUBO/meshes/Body_LSY.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <velocity_decay>
+        <linear>0</linear>
+        <angular>0</angular>
+      </velocity_decay>
+    </link>
+    <joint name='LSY' type='revolute'>
+      <child>Body_LSY</child>
+      <parent>Body_LSR</parent>
+      <axis>
+        <xyz>-6.3918e-16 5.0138e-16 1</xyz>
+        <limit>
+          <lower>-3.14</lower>
+          <upper>3.14</upper>
+          <effort>100000</effort>
+          <velocity>0</velocity>
+        </limit>
+        <dynamics/>
+      </axis>
+    </joint>
+    <link name='Body_LEB'>
+      <pose>0.035001 0.24202 0.1059 -8.6042e-16 -1.79228e-14 -7.5262e-16</pose>
+      <inertial>
+        <pose>0.00028371 -0.24202 -0.52989 0 -0 0</pose>
+        <mass>0.95687</mass>
+        <inertia>
+          <ixx>0.06681</ixx>
+          <ixy>-3.1786e-08</ixy>
+          <ixz>-0.0029038</ixz>
+          <iyy>0.034452</iyy>
+          <iyz>1.0171e-05</iyz>
+          <izz>0.03448</izz>
+        </inertia>
+      </inertial>
+      <collision name='Body_LEB_collision'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DRCHUBO/meshes/Body_LEB.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='Body_LEB_visual'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DRCHUBO/meshes/Body_LEB.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <velocity_decay>
+        <linear>0</linear>
+        <angular>0</angular>
+      </velocity_decay>
+    </link>
+    <joint name='LEB' type='revolute'>
+      <child>Body_LEB</child>
+      <parent>Body_LSY</parent>
+      <axis>
+        <xyz>-7.5262e-16 1 8.6042e-16</xyz>
+        <limit>
+          <lower>-3.14</lower>
+          <upper>3.14</upper>
+          <effort>100000</effort>
+          <velocity>0</velocity>
+        </limit>
+        <dynamics/>
+      </axis>
+    </joint>
+    <link name='Body_LWY'>
+      <pose>1e-06 0.24202 -0.2341 -8.94247e-16 -1.4266e-14 -2.4956e-16</pose>
+      <inertial>
+        <pose>0.035284 -0.24202 -0.18989 0 -0 0</pose>
+        <mass>0.95687</mass>
+        <inertia>
+          <ixx>0.06681</ixx>
+          <ixy>-3.1786e-08</ixy>
+          <ixz>-0.0029038</ixz>
+          <iyy>0.034452</iyy>
+          <iyz>1.0171e-05</iyz>
+          <izz>0.03448</izz>
+        </inertia>
+      </inertial>
+      <collision name='Body_LWY_collision'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DRCHUBO/meshes/Body_LWY.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='Body_LWY_visual'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DRCHUBO/meshes/Body_LWY.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <velocity_decay>
+        <linear>0</linear>
+        <angular>0</angular>
+      </velocity_decay>
+    </link>
+    <joint name='LWY' type='revolute'>
+      <child>Body_LWY</child>
+      <parent>Body_LEB</parent>
+      <axis>
+        <xyz>1.4266e-14 -8.94247e-16 1</xyz>
+        <limit>
+          <lower>-3.14</lower>
+          <upper>3.14</upper>
+          <effort>100000</effort>
+          <velocity>0</velocity>
+        </limit>
+        <dynamics/>
+      </axis>
+    </joint>
+    <link name='Body_LWP'>
+      <pose>1e-06 0.24252 -0.2341 3.32153e-16 -1.48489e-14 -6.71276e-15</pose>
+      <inertial>
+        <pose>0.035284 -0.24252 -0.18989 0 -0 0</pose>
+        <mass>0.95687</mass>
+        <inertia>
+          <ixx>0.06681</ixx>
+          <ixy>-3.1786e-08</ixy>
+          <ixz>-0.0029038</ixz>
+          <iyy>0.034452</iyy>
+          <iyz>1.0171e-05</iyz>
+          <izz>0.03448</izz>
+        </inertia>
+      </inertial>
+      <collision name='Body_LWP_collision'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DRCHUBO/meshes/Body_LWP.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='Body_LWP_visual'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DRCHUBO/meshes/Body_LWP.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <velocity_decay>
+        <linear>0</linear>
+        <angular>0</angular>
+      </velocity_decay>
+    </link>
+    <joint name='LWP' type='revolute'>
+      <child>Body_LWP</child>
+      <parent>Body_LWY</parent>
+      <axis>
+        <xyz>-6.71276e-15 1 -3.32153e-16</xyz>
+        <limit>
+          <lower>-3.14</lower>
+          <upper>3.14</upper>
+          <effort>100000</effort>
+          <velocity>0</velocity>
+        </limit>
+        <dynamics/>
+      </axis>
+    </joint>
+    <link name='Body_LWFT'>
+      <pose>1e-06 0.24252 -0.2661 2.40362e-14 -1.59289e-13 -5.18926e-15</pose>
+      <inertial>
+        <pose>-1.4294e-15 0 -0.01 0 -0 0</pose>
+        <mass>0.072634</mass>
+        <inertia>
+          <ixx>2.3412e-05</ixx>
+          <ixy>-2.5442e-21</ixy>
+          <ixz>-2.649e-18</ixz>
+          <iyy>2.3412e-05</iyy>
+          <iyz>5.9781e-21</iyz>
+          <izz>4.1982e-05</izz>
+        </inertia>
+      </inertial>
+      <collision name='Body_LWFT_collision'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DRCHUBO/meshes/Body_LWFT.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='Body_LWFT_visual'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DRCHUBO/meshes/Body_LWFT.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <velocity_decay>
+        <linear>0</linear>
+        <angular>0</angular>
+      </velocity_decay>
+    </link>
+    <joint name='LWFT' type='revolute'>
+      <child>Body_LWFT</child>
+      <parent>Body_LWP</parent>
+      <axis>
+        <xyz>1.59289e-13 2.40362e-14 1</xyz>
+        <limit>
+          <lower>-3.14</lower>
+          <upper>3.14</upper>
+          <effort>100000</effort>
+          <velocity>0</velocity>
+        </limit>
+        <dynamics/>
+      </axis>
+    </joint>
+    <link name='Body_RSP'>
+      <pose>0 -0.242 0.4559 -3.2328e-16 -6.7696e-16 -6.2038e-18</pose>
+      <inertial>
+        <pose>0.035284 0.242 -0.87989 0 -0 0</pose>
+        <mass>0.95687</mass>
+        <inertia>
+          <ixx>0.06681</ixx>
+          <ixy>-3.1786e-08</ixy>
+          <ixz>-0.0029038</ixz>
+          <iyy>0.034452</iyy>
+          <iyz>1.0171e-05</iyz>
+          <izz>0.03448</izz>
+        </inertia>
+      </inertial>
+      <collision name='Body_RSP_collision'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DRCHUBO/meshes/Body_RSP.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='Body_RSP_visual'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DRCHUBO/meshes/Body_RSP.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <velocity_decay>
+        <linear>0</linear>
+        <angular>0</angular>
+      </velocity_decay>
+    </link>
+    <joint name='RSP' type='revolute'>
+      <child>Body_RSP</child>
+      <parent>Body_TORSO</parent>
+      <axis>
+        <xyz>-6.2038e-18 1 3.2328e-16</xyz>
+        <limit>
+          <lower>-3.14</lower>
+          <upper>3.14</upper>
+          <effort>100000</effort>
+          <velocity>0</velocity>
+        </limit>
+        <dynamics/>
+      </axis>
+    </joint>
+    <link name='Body_RSR'>
+      <pose>0 -0.242 0.4559 -3.72067e-16 1.01614e-15 -1.73251e-12</pose>
+      <inertial>
+        <pose>0.035284 0.242 -0.87989 0 -0 0</pose>
+        <mass>0.95687</mass>
+        <inertia>
+          <ixx>0.06681</ixx>
+          <ixy>-3.1786e-08</ixy>
+          <ixz>-0.0029038</ixz>
+          <iyy>0.034452</iyy>
+          <iyz>1.0171e-05</iyz>
+          <izz>0.03448</izz>
+        </inertia>
+      </inertial>
+      <collision name='Body_RSR_collision'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DRCHUBO/meshes/Body_RSR.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='Body_RSR_visual'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DRCHUBO/meshes/Body_RSR.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <velocity_decay>
+        <linear>0</linear>
+        <angular>0</angular>
+      </velocity_decay>
+    </link>
+    <joint name='RSR' type='revolute'>
+      <child>Body_RSR</child>
+      <parent>Body_RSP</parent>
+      <axis>
+        <xyz>1 1.73251e-12 1.01614e-15</xyz>
+        <limit>
+          <lower>-3.14</lower>
+          <upper>3.14</upper>
+          <effort>100000</effort>
+          <velocity>0</velocity>
+        </limit>
+        <dynamics/>
+      </axis>
+    </joint>
+    <link name='Body_RSY'>
+      <pose>-2.03228e-19 -0.242 0.4557 -1.24054e-15 -1.09326e-15 4.93796e-16</pose>
+      <inertial>
+        <pose>0.035284 0.242 -0.87969 0 -0 0</pose>
+        <mass>0.95687</mass>
+        <inertia>
+          <ixx>0.06681</ixx>
+          <ixy>-3.1786e-08</ixy>
+          <ixz>-0.0029038</ixz>
+          <iyy>0.034452</iyy>
+          <iyz>1.0171e-05</iyz>
+          <izz>0.03448</izz>
+        </inertia>
+      </inertial>
+      <collision name='Body_RSY_collision'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DRCHUBO/meshes/Body_RSY.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='Body_RSY_visual'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DRCHUBO/meshes/Body_RSY.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <velocity_decay>
+        <linear>0</linear>
+        <angular>0</angular>
+      </velocity_decay>
+    </link>
+    <joint name='RSY' type='revolute'>
+      <child>Body_RSY</child>
+      <parent>Body_RSR</parent>
+      <axis>
+        <xyz>-1.09326e-15 1.24054e-15 1</xyz>
+        <limit>
+          <lower>-3.14</lower>
+          <upper>3.14</upper>
+          <effort>100000</effort>
+          <velocity>0</velocity>
+        </limit>
+        <dynamics/>
+      </axis>
+    </joint>
+    <link name='Body_REB'>
+      <pose>0.035001 -0.24202 0.1059 -9.03107e-16 -1.75943e-14 5.83073e-16</pose>
+      <inertial>
+        <pose>0.00028371 0.24202 -0.52989 0 -0 0</pose>
+        <mass>0.95687</mass>
+        <inertia>
+          <ixx>0.06681</ixx>
+          <ixy>-3.1786e-08</ixy>
+          <ixz>-0.0029038</ixz>
+          <iyy>0.034452</iyy>
+          <iyz>1.0171e-05</iyz>
+          <izz>0.03448</izz>
+        </inertia>
+      </inertial>
+      <collision name='Body_REB_collision'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DRCHUBO/meshes/Body_REB.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='Body_REB_visual'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DRCHUBO/meshes/Body_REB.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <velocity_decay>
+        <linear>0</linear>
+        <angular>0</angular>
+      </velocity_decay>
+    </link>
+    <joint name='REB' type='revolute'>
+      <child>Body_REB</child>
+      <parent>Body_RSY</parent>
+      <axis>
+        <xyz>5.83073e-16 1 9.03107e-16</xyz>
+        <limit>
+          <lower>-3.14</lower>
+          <upper>3.14</upper>
+          <effort>100000</effort>
+          <velocity>0</velocity>
+        </limit>
+        <dynamics/>
+      </axis>
+    </joint>
+    <link name='Body_RWY'>
+      <pose>1e-06 -0.24202 -0.2341 -7.12097e-16 -1.84408e-14 2.05497e-15</pose>
+      <inertial>
+        <pose>0.035284 0.24202 -0.18989 0 -0 0</pose>
+        <mass>0.95687</mass>
+        <inertia>
+          <ixx>0.06681</ixx>
+          <ixy>-3.1786e-08</ixy>
+          <ixz>-0.0029038</ixz>
+          <iyy>0.034452</iyy>
+          <iyz>1.0171e-05</iyz>
+          <izz>0.03448</izz>
+        </inertia>
+      </inertial>
+      <collision name='Body_RWY_collision'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DRCHUBO/meshes/Body_RWY.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='Body_RWY_visual'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DRCHUBO/meshes/Body_RWY.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <velocity_decay>
+        <linear>0</linear>
+        <angular>0</angular>
+      </velocity_decay>
+    </link>
+    <joint name='RWY' type='revolute'>
+      <child>Body_RWY</child>
+      <parent>Body_REB</parent>
+      <axis>
+        <xyz>-1.84408e-14 7.12097e-16 1</xyz>
+        <limit>
+          <lower>-3.14</lower>
+          <upper>3.14</upper>
+          <effort>100000</effort>
+          <velocity>0</velocity>
+        </limit>
+        <dynamics/>
+      </axis>
+    </joint>
+    <link name='Body_RWP'>
+      <pose>1e-06 -0.24252 -0.2341 -1.6477e-17 -1.76081e-14 8.91673e-16</pose>
+      <inertial>
+        <pose>0.035284 0.24252 -0.18989 0 -0 0</pose>
+        <mass>0.95687</mass>
+        <inertia>
+          <ixx>0.06681</ixx>
+          <ixy>-3.1786e-08</ixy>
+          <ixz>-0.0029038</ixz>
+          <iyy>0.034452</iyy>
+          <iyz>1.0171e-05</iyz>
+          <izz>0.03448</izz>
+        </inertia>
+      </inertial>
+      <collision name='Body_RWP_collision'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DRCHUBO/meshes/Body_RWP.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='Body_RWP_visual'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DRCHUBO/meshes/Body_RWP.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <velocity_decay>
+        <linear>0</linear>
+        <angular>0</angular>
+      </velocity_decay>
+    </link>
+    <joint name='RWP' type='revolute'>
+      <child>Body_RWP</child>
+      <parent>Body_RWY</parent>
+      <axis>
+        <xyz>8.91673e-16 1 1.6477e-17</xyz>
+        <limit>
+          <lower>-3.14</lower>
+          <upper>3.14</upper>
+          <effort>100000</effort>
+          <velocity>0</velocity>
+        </limit>
+        <dynamics/>
+      </axis>
+    </joint>
+    <link name='Body_RWFT'>
+      <pose>1e-06 -0.24252 -0.26665 -2.63125e-14 -3.01541e-14 -2.50227e-16</pose>
+      <inertial>
+        <pose>1.2757e-14 -1.1297e-14 -0.01 0 -0 0</pose>
+        <mass>0.072634</mass>
+        <inertia>
+          <ixx>2.3412e-05</ixx>
+          <ixy>8.8441e-21</ixy>
+          <ixz>-2.465e-20</ixz>
+          <iyy>2.3412e-05</iyy>
+          <iyz>5.7918e-21</iyz>
+          <izz>4.1982e-05</izz>
+        </inertia>
+      </inertial>
+      <collision name='Body_RWFT_collision'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DRCHUBO/meshes/Body_RWFT.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='Body_RWFT_visual'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DRCHUBO/meshes/Body_RWFT.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <velocity_decay>
+        <linear>0</linear>
+        <angular>0</angular>
+      </velocity_decay>
+    </link>
+    <joint name='RWFT' type='revolute'>
+      <child>Body_RWFT</child>
+      <parent>Body_RWP</parent>
+      <axis>
+        <xyz>-3.01541e-14 2.63125e-14 1</xyz>
+        <limit>
+          <lower>-3.14</lower>
+          <upper>3.14</upper>
+          <effort>100000</effort>
+          <velocity>0</velocity>
+        </limit>
+        <dynamics/>
+      </axis>
+    </joint>
+    <link name='Body_WST'>
+      <pose>0 0 0 -2.3486e-15 1.377e-15 8.1825e-15</pose>
+      <inertial>
+        <pose>-0.00408 0 0.0993 0 -0 0</pose>
+        <mass>7.615</mass>
+        <inertia>
+          <ixx>0.16097</ixx>
+          <ixy>2.012e-04</ixy>
+          <ixz>-0.01</ixz>
+          <iyy>0.092</iyy>
+          <iyz>-1.985e-04</iyz>
+          <izz>0.1120</izz>
+        </inertia>
+      </inertial>
+      <collision name='Body_WST_collision'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DRCHUBO/meshes/Body_WST.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='Body_WST_visual'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DRCHUBO/meshes/Body_WST.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <velocity_decay>
+        <linear>0</linear>
+        <angular>0</angular>
+      </velocity_decay>
+      <sensor name="imu" type="imu">
+        <imu>
+          <noise>
+            <type>gaussian</type>
+            <rate>
+              <mean>0.0</mean>
+              <stddev>2e-4</stddev>
+              <bias_mean>0.0000075</bias_mean>
+              <bias_stddev>0.0000008</bias_stddev>
+            </rate>
+            <accel>
+              <mean>0.0</mean>
+              <stddev>1.7e-2</stddev>
+              <bias_mean>0.1</bias_mean>
+              <bias_stddev>0.001</bias_stddev>
+            </accel>
+          </noise>
+        </imu>
+        <always_on>1</always_on>
+        <update_rate>1000</update_rate>
+      </sensor>
+    </link>
+    <joint name='WST' type='revolute'>
+      <child>Body_WST</child>
+      <parent>Body_TORSO</parent>
+      <axis>
+        <xyz>1.377e-15 2.3486e-15 1</xyz>
+        <limit>
+          <lower>-3.14</lower>
+          <upper>3.14</upper>
+          <effort>100000</effort>
+          <velocity>0</velocity>
+        </limit>
+        <dynamics/>
+      </axis>
+    </joint>
+    <link name='Body_LHY'>
+      <pose>-8.1825e-16 0.1 -2.3486e-16 -1.30567e-29 1.12965e-15 -1.3801e-15</pose>
+      <inertial>
+        <pose>0.035284 1.0336e-06 -0.42399 0 -0 0</pose>
+        <mass>0.95687</mass>
+        <inertia>
+          <ixx>0.06681</ixx>
+          <ixy>-3.1786e-08</ixy>
+          <ixz>-0.0029038</ixz>
+          <iyy>0.034452</iyy>
+          <iyz>1.0171e-05</iyz>
+          <izz>0.03448</izz>
+        </inertia>
+      </inertial>
+      <collision name='Body_LHY_collision'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DRCHUBO/meshes/Body_LHY.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='Body_LHY_visual'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DRCHUBO/meshes/Body_LHY.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <velocity_decay>
+        <linear>0</linear>
+        <angular>0</angular>
+      </velocity_decay>
+    </link>
+    <joint name='LHY' type='revolute'>
+      <child>Body_LHY</child>
+      <parent>Body_WST</parent>
+      <axis>
+        <xyz>1.12965e-15 1.14977e-29 1</xyz>
+        <limit>
+          <lower>-3.14</lower>
+          <upper>3.14</upper>
+          <effort>100000</effort>
+          <velocity>0</velocity>
+        </limit>
+        <dynamics/>
+      </axis>
+    </joint>
+    <link name='Body_LHR'>
+      <pose>-8.1825e-16 0.1 -2.3486e-16 2.2525e-16 1.3281e-15 -1.30831e-15</pose>
+      <inertial>
+        <pose>0.035284 1.0336e-06 -0.42399 0 -0 0</pose>
+        <mass>0.95687</mass>
+        <inertia>
+          <ixx>0.06681</ixx>
+          <ixy>-3.1786e-08</ixy>
+          <ixz>-0.0029038</ixz>
+          <iyy>0.034452</iyy>
+          <iyz>1.0171e-05</iyz>
+          <izz>0.03448</izz>
+        </inertia>
+      </inertial>
+      <collision name='Body_LHR_collision'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DRCHUBO/meshes/Body_LHR.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='Body_LHR_visual'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DRCHUBO/meshes/Body_LHR.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <velocity_decay>
+        <linear>0</linear>
+        <angular>0</angular>
+      </velocity_decay>
+    </link>
+    <joint name='LHR' type='revolute'>
+      <child>Body_LHR</child>
+      <parent>Body_LHY</parent>
+      <axis>
+        <xyz>1 1.30831e-15 1.3281e-15</xyz>
+        <limit>
+          <lower>-3.14</lower>
+          <upper>3.14</upper>
+          <effort>100000</effort>
+          <velocity>0</velocity>
+        </limit>
+        <dynamics/>
+      </axis>
+    </joint>
+    <link name='Body_LHP'>
+      <pose>-8.1825e-16 0.1 -2.3486e-16 -2.0929e-16 3.4792e-09 4.55486e-16</pose>
+      <inertial>
+        <pose>0.00968 0.01639 0.1813 0 -0 0</pose>
+        <mass>8.203</mass>
+        <inertia>
+          <ixx>0.1616</ixx>
+          <ixy>-1.16e-03</ixy>
+          <ixz>-1.038e-2</ixz>
+          <iyy>0.1597</iyy>
+          <iyz>14.646e-03</iyz>
+          <izz>0.03152</izz>
+        </inertia>
+      </inertial>
+      <collision name='Body_LHP_collision'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DRCHUBO/meshes/Body_LHP.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='Body_LHP_visual'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DRCHUBO/meshes/Body_LHP.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <velocity_decay>
+        <linear>0</linear>
+        <angular>0</angular>
+      </velocity_decay>
+    </link>
+    <joint name='LHP' type='revolute'>
+      <child>Body_LHP</child>
+      <parent>Body_LHR</parent>
+      <axis>
+        <xyz>-4.55486e-16 1 -2.0929e-16</xyz>
+        <limit>
+          <lower>-3.14</lower>
+          <upper>3.14</upper>
+          <effort>100000</effort>
+          <velocity>0</velocity>
+        </limit>
+        <dynamics/>
+      </axis>
+    </joint>
+    <link name='Body_LKN'>
+      <pose>-1.3221e-09 0.1 -0.38 9.2131e-16 -3.675e-09 -2.69521e-15</pose>
+      <inertial>
+        <pose>0.0209 0.0191 0.1622 0 -0 0</pose>
+        <mass>3.935</mass>
+        <inertia>
+          <ixx>0.057968</ixx>
+          <ixy>7.605e-04</ixy>
+          <ixz>4.6676e-03</ixz>
+          <iyy>0.053969</iyy>
+          <iyz>-1.9e-4</iyz>
+          <izz>0.010554</izz>
+        </inertia>
+      </inertial>
+      <collision name='Body_LKN_collision'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DRCHUBO/meshes/Body_LKN.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='Body_LKN_visual'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DRCHUBO/meshes/Body_LKN.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <velocity_decay>
+        <linear>0</linear>
+        <angular>0</angular>
+      </velocity_decay>
+    </link>
+    <joint name='LKN' type='revolute'>
+      <child>Body_LKN</child>
+      <parent>Body_LHP</parent>
+      <axis>
+        <xyz>-2.69521e-15 1 -9.2131e-16</xyz>
+        <limit>
+          <lower>-3.14</lower>
+          <upper>3.14</upper>
+          <effort>100000</effort>
+          <velocity>0</velocity>
+        </limit>
+        <dynamics/>
+      </axis>
+    </joint>
+    <link name='Body_LAP'>
+      <pose>9.02199e-13 0.1 -0.74 2.7752e-16 1.3281e-15 7.91286e-16</pose>
+      <inertial>
+        <pose>0.01284 0.38e-04 0.01859 0 -0 0</pose>
+        <mass>1.456</mass>
+        <inertia>
+          <ixx>0.02046</ixx>
+          <ixy>-1.2e-05</ixy>
+          <ixz>-0.00051</ixz>
+          <iyy>0.003698</iyy>
+          <iyz>-1.8e-06</iyz>
+          <izz>0.002619</izz>
+        </inertia>
+      </inertial>
+      <collision name='Body_LAP_collision'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DRCHUBO/meshes/Body_LAP.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='Body_LAP_visual'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DRCHUBO/meshes/Body_LAP.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <velocity_decay>
+        <linear>0</linear>
+        <angular>0</angular>
+      </velocity_decay>
+    </link>
+    <joint name='LAP' type='revolute'>
+      <child>Body_LAP</child>
+      <parent>Body_LKN</parent>
+      <axis>
+        <xyz>7.91286e-16 1 -2.7752e-16</xyz>
+        <limit>
+          <lower>-3.14</lower>
+          <upper>3.14</upper>
+          <effort>100000</effort>
+          <velocity>0</velocity>
+        </limit>
+        <dynamics/>
+      </axis>
+    </joint>
+    <link name='Body_LAR'>
+      <pose>9.02166e-13 0.1 -0.765 5.84168e-13 -2.817e-16 -3.29471e-15</pose>
+      <inertial>
+        <pose>0.035284 1.0336e-06 -0.42399 0 -0 0</pose>
+        <mass>0.95687</mass>
+        <inertia>
+          <ixx>0.06681</ixx>
+          <ixy>-3.1786e-08</ixy>
+          <ixz>-0.0029038</ixz>
+          <iyy>0.034452</iyy>
+          <iyz>1.0171e-05</iyz>
+          <izz>0.03448</izz>
+        </inertia>
+      </inertial>
+      <collision name='Body_LAR_collision'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DRCHUBO/meshes/Body_LAR.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name='Body_LAR_collision_Body_LAFT'>
+        <pose>0 0 -0.055 5.7969e-13 5.5511e-17 -1.7318e-15</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DRCHUBO/meshes/Body_LAFT.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='Body_LAR_visual'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DRCHUBO/meshes/Body_LAR.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <visual name='Body_LAR_visual_Body_LAFT'>
+        <pose>0 0 -0.055 5.7969e-13 5.5511e-17 -1.7318e-15</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DRCHUBO/meshes/Body_LAFT.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <velocity_decay>
+        <linear>0</linear>
+        <angular>0</angular>
+      </velocity_decay>
+	<sensor name='LFFT' type='contact'>
+          <contact>
+            <collision>Body_LAR_collision_Body_LAFT</collision>
+          </contact>
+        </sensor>
+    </link>
+    <joint name='LAR' type='revolute'>
+      <child>Body_LAR</child>
+      <parent>Body_LAP</parent>
+      <axis>
+        <xyz>1 -3.29471e-15 2.817e-16</xyz>
+        <limit>
+          <lower>-3.14</lower>
+          <upper>3.14</upper>
+          <effort>100000</effort>
+          <velocity>0</velocity>
+        </limit>
+        <dynamics/>
+      </axis>
+    </joint>
+    <link name='Body_LWH'>
+      <pose>0.045751 0.179176 -0.51 3.55381e-15 1.3281e-15 -2.12455e-15</pose>
+      <inertial>
+        <pose>0.035284 1.0336e-06 -0.42399 0 -0 0</pose>
+        <mass>0.95687</mass>
+        <inertia>
+          <ixx>0.06681</ixx>
+          <ixy>-3.1786e-08</ixy>
+          <ixz>-0.0029038</ixz>
+          <iyy>0.034452</iyy>
+          <iyz>1.0171e-05</iyz>
+          <izz>0.03448</izz>
+        </inertia>
+      </inertial>
+      <collision name='Body_LWH_collision'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DRCHUBO/meshes/Body_LWH.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='Body_LWH_visual'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DRCHUBO/meshes/Body_LWH.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <velocity_decay>
+        <linear>0</linear>
+        <angular>0</angular>
+      </velocity_decay>
+    </link>
+    <joint name='LWH' type='revolute'>
+      <child>Body_LWH</child>
+      <parent>Body_LKN</parent>
+      <axis>
+        <xyz>2.12455e-15 1 3.55381e-15</xyz>
+        <limit>
+          <lower>-1e+16</lower>
+          <upper>1e+16</upper>
+        </limit>
+        <dynamics/>
+      </axis>
+    </joint>
+    <link name='Body_RHY'>
+      <pose>8.1825e-16 -0.1 2.3486e-16 4.84e-17 1.84027e-15 1.07e-17</pose>
+      <inertial>
+        <pose>0.035284 1.0336e-06 -0.42399 0 -0 0</pose>
+        <mass>0.95687</mass>
+        <inertia>
+          <ixx>0.06681</ixx>
+          <ixy>-3.1786e-08</ixy>
+          <ixz>-0.0029038</ixz>
+          <iyy>0.034452</iyy>
+          <iyz>1.0171e-05</iyz>
+          <izz>0.03448</izz>
+        </inertia>
+      </inertial>
+      <collision name='Body_RHY_collision'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DRCHUBO/meshes/Body_RHY.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='Body_RHY_visual'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DRCHUBO/meshes/Body_RHY.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <velocity_decay>
+        <linear>0</linear>
+        <angular>0</angular>
+      </velocity_decay>
+    </link>
+    <joint name='RHY' type='revolute'>
+      <child>Body_RHY</child>
+      <parent>Body_WST</parent>
+      <axis>
+        <xyz>-1.84027e-15 4.84e-17 1</xyz>
+        <limit>
+          <lower>-3.14</lower>
+          <upper>3.14</upper>
+          <effort>100000</effort>
+          <velocity>0</velocity>
+        </limit>
+        <dynamics/>
+      </axis>
+    </joint>
+    <link name='Body_RHR'>
+      <pose>8.1825e-16 -0.1 2.3486e-16 3.83556e-16 -1.80545e-15 -3.14159</pose>
+      <inertial>
+        <pose>0.035284 1.0336e-06 -0.42399 0 -0 0</pose>
+        <mass>0.95687</mass>
+        <inertia>
+          <ixx>0.06681</ixx>
+          <ixy>-3.1786e-08</ixy>
+          <ixz>-0.0029038</ixz>
+          <iyy>0.034452</iyy>
+          <iyz>1.0171e-05</iyz>
+          <izz>0.03448</izz>
+        </inertia>
+      </inertial>
+      <collision name='Body_RHR_collision'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DRCHUBO/meshes/Body_RHR.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='Body_RHR_visual'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DRCHUBO/meshes/Body_RHR.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <velocity_decay>
+        <linear>0</linear>
+        <angular>0</angular>
+      </velocity_decay>
+    </link>
+    <joint name='RHR' type='revolute'>
+      <child>Body_RHR</child>
+      <parent>Body_RHY</parent>
+      <axis>
+        <xyz>1 7.34641e-06 -1.80545e-15</xyz>
+        <limit>
+          <lower>-3.14</lower>
+          <upper>3.14</upper>
+          <effort>100000</effort>
+          <velocity>0</velocity>
+        </limit>
+        <dynamics/>
+      </axis>
+    </joint>
+    <link name='Body_RHP'>
+      <pose>8.1825e-16 -0.1 2.3486e-16 -2.66683e-16 -2.49269e-12 1.46928e-05</pose>
+      <inertial>
+        <pose>-0.00968 0.01639 0.1813 0 -0 0</pose>
+        <mass>8.203</mass>
+        <inertia>
+          <ixx>0.1616</ixx>
+          <ixy>1.16e-03</ixy>
+          <ixz>1.038e-2</ixz>
+          <iyy>0.1597</iyy>
+          <iyz>14.646e-03</iyz>
+          <izz>0.03152</izz>
+        </inertia>
+      </inertial>
+      <collision name='Body_RHP_collision'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DRCHUBO/meshes/Body_RHP.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='Body_RHP_visual'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DRCHUBO/meshes/Body_RHP.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <velocity_decay>
+        <linear>0</linear>
+        <angular>0</angular>
+      </velocity_decay>
+    </link>
+    <joint name='RHP' type='revolute'>
+      <child>Body_RHP</child>
+      <parent>Body_RHR</parent>
+      <axis>
+        <xyz>1.46928e-05 1 2.66683e-16</xyz>
+        <limit>
+          <lower>-3.14</lower>
+          <upper>3.14</upper>
+          <effort>100000</effort>
+          <velocity>0</velocity>
+        </limit>
+        <dynamics/>
+      </axis>
+    </joint>
+    <link name='Body_RKN'>
+      <pose>9.48042e-13 -0.1 -0.38 -4.75063e-16 -1.57048e-12 1.46928e-05</pose>
+      <inertial>
+        <pose>-0.0209 0.0191 0.1622 0 -0 0</pose>
+        <mass>3.935</mass>
+        <inertia>
+          <ixx>0.057968</ixx>
+          <ixy>-7.605e-04</ixy>
+          <ixz>-4.6676e-03</ixz>
+          <iyy>0.053969</iyy>
+          <iyz>-1.9e-4</iyz>
+          <izz>0.010554</izz>
+        </inertia>
+      </inertial>
+      <collision name='Body_RKN_collision'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DRCHUBO/meshes/Body_RKN.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='Body_RKN_visual'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DRCHUBO/meshes/Body_RKN.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <velocity_decay>
+        <linear>0</linear>
+        <angular>0</angular>
+      </velocity_decay>
+    </link>
+    <joint name='RKN' type='revolute'>
+      <child>Body_RKN</child>
+      <parent>Body_RHP</parent>
+      <axis>
+        <xyz>1.46928e-05 1 4.75063e-16</xyz>
+        <limit>
+          <lower>-3.14</lower>
+          <upper>3.14</upper>
+          <effort>100000</effort>
+          <velocity>0</velocity>
+        </limit>
+        <dynamics/>
+      </axis>
+    </joint>
+    <link name='Body_RAP'>
+      <pose>1.51342e-12 -0.1 -0.74 -2.77523e-16 1.41545e-15 1.46928e-05</pose>
+      <inertial>
+        <pose>-0.01284 0.38e-04 0.01859 0 -0 0</pose>
+        <mass>1.456</mass>
+        <inertia>
+          <ixx>0.02046</ixx>
+          <ixy>1.2e-05</ixy>
+          <ixz>0.00051</ixz>
+          <iyy>0.003698</iyy>
+          <iyz>-1.8e-06</iyz>
+          <izz>0.002619</izz>
+        </inertia>
+      </inertial>
+      <collision name='Body_RAP_collision'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DRCHUBO/meshes/Body_RAP.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='Body_RAP_visual'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DRCHUBO/meshes/Body_RAP.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <velocity_decay>
+        <linear>0</linear>
+        <angular>0</angular>
+      </velocity_decay>
+    </link>
+    <joint name='RAP' type='revolute'>
+      <child>Body_RAP</child>
+      <parent>Body_RKN</parent>
+      <axis>
+        <xyz>1.46928e-05 1 2.77523e-16</xyz>
+        <limit>
+          <lower>-3.14</lower>
+          <upper>3.14</upper>
+          <effort>100000</effort>
+          <velocity>0</velocity>
+        </limit>
+        <dynamics/>
+      </axis>
+    </joint>
+    <link name='Body_RAR'>
+      <pose>1.51338e-12 -0.1 -0.765 -2.24812e-15 1.74852e-15 1.46928e-05</pose>
+      <inertial>
+        <pose>0.035284 1.0336e-06 -0.42399 0 -0 0</pose>
+        <mass>0.95687</mass>
+        <inertia>
+          <ixx>0.06681</ixx>
+          <ixy>-3.1786e-08</ixy>
+          <ixz>-0.0029038</ixz>
+          <iyy>0.034452</iyy>
+          <iyz>1.0171e-05</iyz>
+          <izz>0.03448</izz>
+        </inertia>
+      </inertial>
+      <collision name='Body_RAR_collision'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DRCHUBO/meshes/Body_RAR.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name='Body_RAR_collision_Body_RAFT'>
+        <pose>0 0 -0.055 1.1626e-12 1.6653e-16 7.5168e-17</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DRCHUBO/meshes/Body_RAFT.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='Body_RAR_visual'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DRCHUBO/meshes/Body_RAR.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <visual name='Body_RAR_visual_Body_RAFT'>
+        <pose>0 0 -0.055 1.1626e-12 1.6653e-16 7.5168e-17</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DRCHUBO/meshes/Body_RAFT.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <velocity_decay>
+        <linear>0</linear>
+        <angular>0</angular>
+      </velocity_decay>
+	<sensor name='RFFT' type='contact'>
+          <contact>
+            <collision>Body_RAR_collision_Body_RAFT</collision>
+          </contact>
+        </sensor>
+    </link>
+    <joint name='RAR' type='revolute'>
+      <child>Body_RAR</child>
+      <parent>Body_RAP</parent>
+      <axis>
+        <xyz>1 1.46928e-05 -1.74852e-15</xyz>
+        <limit>
+          <lower>-3.14</lower>
+          <upper>3.14</upper>
+          <effort>100000</effort>
+          <velocity>0</velocity>
+        </limit>
+        <dynamics/>
+      </axis>
+    </joint>
+    <link name='Body_RWH'>
+      <pose>0.0457522 -0.18129 -0.51 -2.27283e-16 1.21545e-15 1.46928e-05</pose>
+      <inertial>
+        <pose>0.035284 1.0336e-06 -0.42399 0 -0 0</pose>
+        <mass>0.95687</mass>
+        <inertia>
+          <ixx>0.06681</ixx>
+          <ixy>-3.1786e-08</ixy>
+          <ixz>-0.0029038</ixz>
+          <iyy>0.034452</iyy>
+          <iyz>1.0171e-05</iyz>
+          <izz>0.03448</izz>
+        </inertia>
+      </inertial>
+      <collision name='Body_RWH_collision'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DRCHUBO/meshes/Body_RWH.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='Body_RWH_visual'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DRCHUBO/meshes/Body_RWH.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <velocity_decay>
+        <linear>0</linear>
+        <angular>0</angular>
+      </velocity_decay>
+    </link>
+    <joint name='RWH' type='revolute'>
+      <child>Body_RWH</child>
+      <parent>Body_RKN</parent>
+      <axis>
+        <xyz>1.46928e-05 1 2.27283e-16</xyz>
+        <limit>
+          <lower>-3.14</lower>
+          <upper>3.14</upper>
+          <effort>100000</effort>
+          <velocity>0</velocity>
+        </limit>
+        <dynamics/>
+      </axis>
+    </joint>
+<plugin name="drchuboplugin" filename="build/libdrchuboplugin.so"/>
+  </model>
+ 
+</sdf>
