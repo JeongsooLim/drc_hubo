@@ -38,8 +38,7 @@
  *
  */
 
-// This AL is made by Hyoin Bae (HuboLab at KAIST)
-// e-mail: pos97110@kaist.ac.kr
+
 
 #include <QCoreApplication>
 

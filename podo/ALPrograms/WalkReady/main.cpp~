@@ -38,7 +38,7 @@
  *
  */
 
-// This AL is made by Jungwoo Heo (Rainbow Robotics)
+// This AL is made by Jungwoo Heo (HuboLab at KAIST)
 // e-mail: jwheo@rainbow.re.kr
 
 #include <QCoreApplication>

@@ -1,5 +1,3 @@
-// This AL is made by Inho Lee (HuboLab at KAIST)
-// e-mail: inholee@kaist.ac.kr
 
 #include <QCoreApplication>
 
@@ -15,10 +13,6 @@
 #include "joint.h"
 #include "stdio.h"
 #include "DebrisMotion.h"
-
-
-
-
 
 CDebrisMotion m_dbmotion;
 
