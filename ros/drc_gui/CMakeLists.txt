@@ -72,6 +72,7 @@ file(GLOB_RECURSE QT_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} FOLLOW_SYMLINK
 ##############################################################################
 
 add_executable(drc_gui ${QT_SOURCES} ${QT_RESOURCES_CPP} ${QT_FORMS_HPP} ${QT_MOC_HPP})
+add_dependencies(drc_gui drc_gui_generate_messages_cpp)
 target_link_libraries(drc_gui ${QT_LIBRARIES} ${catkin_LIBRARIES})
 install(TARGETS drc_gui RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
