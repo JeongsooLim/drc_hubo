@@ -2,11 +2,7 @@
 <package>
   <name>drc_gui</name>
   <version>0.1.0</version>
-  <description>
-
-     drc_gui
-
-  </description>
+  <description>The drc_gui package</description>
   <maintainer email="yjs0497@kaist.ac.kr">JeongsooLim</maintainer>
   <license>BSD</license>
   <!-- <url type="bugtracker">https://github.com/stonier/qt_ros/issues</url> -->
@@ -14,11 +10,11 @@
 
   <buildtool_depend>catkin</buildtool_depend>
   <build_depend>qt_build</build_depend>
-  <build_depend>roscpp</build_depend>
   <build_depend>libqt4-dev</build_depend>
   <run_depend>qt_build</run_depend>
-  <run_depend>roscpp</run_depend>
   <run_depend>libqt4-dev</run_depend>
+  <build_depend>rospy</build_depend>
+  <run_depend>rospy</run_depend>
   <build_depend>roscpp</build_depend>
   <run_depend>roscpp</run_depend>
   <build_depend>std_msgs</build_depend>
