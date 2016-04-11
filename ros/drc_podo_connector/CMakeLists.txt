@@ -26,6 +26,7 @@ SET(LIBRARIES
 include_directories(${Boost_INCLUDE_DIR} ${catkin_INCLUDE_DIRS})
 
 add_executable(podo_connector src/podo_connector.cpp)
+add_dependencies(podo_connector drc_podo_connector_generate_messages_cpp)
 target_link_libraries(podo_connector ${LIBRARIES})
 
 
