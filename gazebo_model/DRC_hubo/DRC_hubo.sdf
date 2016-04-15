@@ -3554,7 +3554,7 @@
       </axis>
     </joint>
 
-    <plugin name="drc_plugin" filename="/home/gazebo/catkin_ws/devel/lib/libdrc_plugin.so"/>
+    <plugin name="drc_plugin" filename="/home/hubo/catkin_ws/devel/lib/libdrc_plugin.so"/>
 
     <include>
 

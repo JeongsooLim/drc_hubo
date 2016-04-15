@@ -22,8 +22,10 @@ include_directories(${Boost_INCLUDE_DIR} ${catkin_INCLUDE_DIRS} ${GAZEBO_INCLUDE
 
 add_library(drc_plugin src/drc_plugin.cpp)
 add_library(head_plugin src/head_plugin.cpp)
+add_dependencies(head_plugin head_plugin_generate_messages_cpp)
 target_link_libraries(drc_plugin ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
 target_link_libraries(head_plugin ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
+
 
 catkin_package(
   DEPENDS 

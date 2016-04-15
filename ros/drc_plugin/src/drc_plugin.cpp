@@ -39,7 +39,7 @@ void DRCPlugin::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
 
     // Create Socket ---------------------
     FILE *fpNet = NULL;
-    fpNet = fopen("/home/gazebo/catkin_ws/src/drc_hubo/ros/settings/network.txt", "r");
+    fpNet = fopen("/home/hubo/catkin_ws/src/drc_hubo/ros/settings/network.txt", "r");
     if(fpNet == NULL){
         std::cout << ">>> Network File Open Error..!!" << std::endl;
         sprintf(ip, PODO_ADDR);
@@ -65,7 +65,7 @@ void DRCPlugin::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
 
     // Load Gains for Joints --------------
     FILE *fpGain = NULL;
-    fpGain = fopen("/home/gazebo/catkin_ws/src/drc_hubo/ros/settings/gain.txt", "r");
+    fpGain = fopen("/home/hubo/catkin_ws/src/drc_hubo/ros/settings/gain.txt", "r");
     if(fpGain == NULL){
         std::cout << ">>> Gain File Open Error..!!" << std::endl;
     }else{

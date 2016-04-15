@@ -4,7 +4,7 @@ project(drc_plugin)
 # Load catkin and all dependencies required for this package
 find_package(catkin REQUIRED COMPONENTS 
   roscpp
-  gazebo_ros
+  gazebo_msgs
   std_msgs
   message_generation
   tf

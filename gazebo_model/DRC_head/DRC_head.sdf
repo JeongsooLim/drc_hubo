@@ -200,7 +200,7 @@
       </sensor>
     </link>
 
-  <plugin name="head_plugin" filename="/home/gazebo/catkin_ws/devel/lib/libhead_plugin.so"/>
+  <plugin name="head_plugin" filename="/home/hubo/catkin_ws/devel/lib/libhead_plugin.so"/>
 
 
 
