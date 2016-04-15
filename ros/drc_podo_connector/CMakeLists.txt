@@ -7,6 +7,7 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   message_generation
   tf
+  nav_msgs
 )
 
 add_message_files(

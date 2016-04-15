@@ -18,10 +18,6 @@ generate_messages(DEPENDENCIES std_msgs)
 
 
 
-SET(LIBRARIES
-    ${QT_LIBRARIES}
-    ${catkin_LIBRARIES}
-)
 
 include_directories(${Boost_INCLUDE_DIR} ${catkin_INCLUDE_DIRS})
 
