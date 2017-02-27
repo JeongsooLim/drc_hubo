@@ -39,7 +39,7 @@ void DRCPlugin::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
 
     // Create Socket ---------------------
     FILE *fpNet = NULL;
-    fpNet = fopen("/home/gazebo/catkin_ws/src/drc_hubo/ros/settings/network.txt", "r");
+    fpNet = fopen("/home/hubo/catkin_ws/src/drc_hubo/ros/settings/network.txt", "r");
     if(fpNet == NULL){
         std::cout << ">>> Network File Open Error..!!" << std::endl;
         sprintf(ip, PODO_ADDR);
@@ -65,7 +65,7 @@ void DRCPlugin::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
 
     // Load Gains for Joints --------------
     FILE *fpGain = NULL;
-    fpGain = fopen("/home/gazebo/catkin_ws/src/drc_hubo/ros/settings/gain.txt", "r");
+    fpGain = fopen("/home/hubo/catkin_ws/src/drc_hubo/ros/settings/gain.txt", "r");
     if(fpGain == NULL){
         std::cout << ">>> Gain File Open Error..!!" << std::endl;
     }else{
@@ -173,9 +173,9 @@ void DRCPlugin::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
     JCon->SetJointPosition(JPtr_RWFT,0);
     JCon->SetJointPosition(JPtr_LWFT,0);
 
-    RAFT = boost::dynamic_pointer_cast<sensors::ForceTorqueSensor>(sensors::get_sensor("FT_RAFT"));
-    LAFT = boost::dynamic_pointer_cast<sensors::ForceTorqueSensor>(sensors::get_sensor("FT_LAFT"));
-    IMU = boost::dynamic_pointer_cast<sensors::ImuSensor>(sensors::get_sensor("imu"));
+    RAFT = std::dynamic_pointer_cast<sensors::ForceTorqueSensor>(sensors::get_sensor("FT_RAFT"));
+    LAFT = std::dynamic_pointer_cast<sensors::ForceTorqueSensor>(sensors::get_sensor("FT_LAFT"));
+    IMU = std::dynamic_pointer_cast<sensors::ImuSensor>(sensors::get_sensor("imu"));
 
     if(!LAFT || !RAFT || !IMU)
         std::cout << "SENSOR ERROR (NULL)" << std::endl;
@@ -396,8 +396,8 @@ void DRCPlugin::OnUpdate(const common::UpdateInfo &){
 
 
 void DRCPlugin::OnLAFTUpdate(){
-    math::Vector3 LAF = LAFT->GetForce();
-    math::Vector3 LAT = LAFT->GetTorque();
+    math::Vector3 LAF = LAFT->Force();
+    math::Vector3 LAT = LAFT->Torque();
     filt_LAF = filt_alpha*LAF + (1-filt_alpha)*filt_LAF;
     filt_LAT = filt_alpha*LAT + (1-filt_alpha)*filt_LAT;
     if(connectionStatus){
@@ -411,8 +411,8 @@ void DRCPlugin::OnLAFTUpdate(){
 }
 
 void DRCPlugin::OnRAFTUpdate(){
-    math::Vector3 RAF = RAFT->GetForce();
-    math::Vector3 RAT = RAFT->GetTorque();
+    math::Vector3 RAF = RAFT->Force();
+    math::Vector3 RAT = RAFT->Torque();
     filt_RAF = filt_alpha*RAF + (1-filt_alpha)*filt_RAF;
     filt_RAT = filt_alpha*RAT + (1-filt_alpha)*filt_RAT;
     if(connectionStatus){
@@ -426,9 +426,9 @@ void DRCPlugin::OnRAFTUpdate(){
 }
 
 void DRCPlugin::OnIMUUpdate(){
-    math::Vector3 AV = IMU->GetAngularVelocity();
-    math::Vector3 LA = IMU->GetLinearAcceleration();
-    math::Quaternion q = IMU->GetOrientation();
+    math::Vector3 AV = IMU->AngularVelocity();
+    math::Vector3 LA = IMU->LinearAcceleration();
+    math::Quaternion q = IMU->Orientation();
     if(connectionStatus){
         float l = q.w*q.w + q.x*q.x + q.y*q.y + q.z*q.z;
         float w, x, y, z;
