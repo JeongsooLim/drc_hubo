@@ -2,7 +2,8 @@
 #include "drc_plugin.h"
 
 
-#define PODO_ADDR       "10.12.3.30"
+// #define PODO_ADDR       "10.12.3.30"
+#define PODO_ADDR       "127.0.0.1"
 #define PODO_PORT       8888
 
 const float     D2Rf = 0.0174533;
