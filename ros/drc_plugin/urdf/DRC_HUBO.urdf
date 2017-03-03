@@ -3076,7 +3076,7 @@
 
 
 
-  <include filename="$(find drc_plugin)/urdf/DRC_HEAD.urdf" />
+  <xacro:include filename="$(find drc_plugin)/urdf/DRC_HEAD.urdf" />
 
   <joint name="head_joint" type="fixed">
     <origin xyz="0.055 0 0.521" rpy="0 0 0" />
