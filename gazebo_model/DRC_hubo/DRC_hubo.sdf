@@ -3554,16 +3554,15 @@
       </axis>
     </joint>
 
-    <plugin name="drc_plugin" filename="/home/hubo/catkin_ws/devel/lib/libdrc_plugin.so"/>
+    <plugin name="drc_plugin" filename="home/rainbow/catkin_ws/devel/lib/libdrc_plugin.so"/>
 
     <include>
-
       <uri>model://DRC_head</uri>
 <!--
       <uri>model://DRC_head_kinect</uri>
 -->
       <pose>0.055 0 0.521 0 0 0</pose>
-    <include>
+    </include>
 
 
 

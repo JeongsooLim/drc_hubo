@@ -7,7 +7,7 @@
       <pose>0 0 0 0 0 0</pose>
       <inertial>
         <pose>-0.0080768 0.0056186 0.13872 0 0 0</pose>
-        <mass>0.0069065</mass>
+        <mass>0.069065</mass>
         <inertia>
           <ixx>0.000068275</ixx>
           <ixy>0.0000011826</ixy>
@@ -200,7 +200,7 @@
       </sensor>
     </link>
 
-  <plugin name="head_plugin" filename="/home/hubo/catkin_ws/devel/lib/libhead_plugin.so"/>
+  <plugin name="head_plugin" filename="/home/rainbow/catkin_ws/devel/lib/libhead_plugin.so"/>
 
 
 
