@@ -6,6 +6,8 @@
 #include <gazebo/math/Vector3.hh>
 #include <stdio.h>
 
+#include <boost/pointer_cast.hpp>
+
 ////////////////////////////
 
 #include "GazeboLANData.h"
@@ -16,6 +18,7 @@
 #include <gazebo/common/Plugin.hh>
 #include <gazebo/physics/JointWrench.hh>
 
+#include <iostream>
 
 // for socket client
 #include <stdio.h>
@@ -54,6 +57,7 @@ public:
 
 private:
     // Pointer to the model
+    physics::WorldPtr   world;
     physics::ModelPtr   model;
     sdf::ElementPtr     element;
 
@@ -120,6 +124,7 @@ private:
     int sock;
     struct sockaddr_in  client;
     pthread_t   LANTHREAD_t;
+    pthread_t   WORLDTHREAD_t;
 
     int     threadWorking;
     int     connectionStatus;
@@ -143,6 +148,7 @@ private:
     void    NewRXData();
     void    FirstData();
     static void    *LANThread(void *_arg);
+    static void    *WorldThread(void *_arg);
 
 };
 
