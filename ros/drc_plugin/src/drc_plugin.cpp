@@ -1,7 +1,8 @@
+
 #include "drc_plugin.h"
 
-// #define PODO_ADDR       "10.12.3.30"
-#define PODO_ADDR       "127.0.0.1"
+
+#define PODO_ADDR       "10.12.3.30"
 #define PODO_PORT       8888
 
 const float     D2Rf = 0.0174533;
@@ -38,7 +39,7 @@ void DRCPlugin::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
 
     // Create Socket ---------------------
     FILE *fpNet = NULL;
-    fpNet = fopen("/home/rainbow/catkin_ws/src/drc_hubo/ros/settings/network.txt", "r");
+    fpNet = fopen("~/catkin_ws/src/drc_hubo/ros/settings/network.txt", "r");
     if(fpNet == NULL){
         std::cout << ">>> Network File Open Error..!!" << std::endl;
         sprintf(ip, PODO_ADDR);
@@ -62,11 +63,9 @@ void DRCPlugin::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
         std::cout << "Create Socket Error.." << std::endl;
     }
 
-
-
     // Load Gains for Joints --------------
     FILE *fpGain = NULL;
-    fpGain = fopen("/home/rainbow/catkin_ws/src/drc_hubo/ros/settings/gain.txt", "r");
+    fpGain = fopen("~/catkin_ws/src/drc_hubo/ros/settings/gain.txt", "r");
     if(fpGain == NULL){
         std::cout << ">>> Gain File Open Error..!!" << std::endl;
     }else{
@@ -138,9 +137,6 @@ void DRCPlugin::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
     JPtr_LFUNI = model->GetJoint("LFUNI");
     JPtr_Head = model->GetJoint("head_joint");
 
-    JCon->AddJoint(JPtr_Head);
-    JCon->SetPositionPID(JPtr_Head->GetScopedName(), common::PID(0.001,0,0.0001));
-
 
     // provide feedback for getting wrench---
     for(int i=0; i<NO_OF_JOINTS; i++){
@@ -194,210 +190,13 @@ void DRCPlugin::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
     RAFT->SetUpdateRate(1000);
 
     // Listen to the update event. This event is broadcast every simulation iteration.
-    world = model->GetWorld();
     UpdateConnection = event::Events::ConnectWorldUpdateBegin(boost::bind(&DRCPlugin::OnUpdate, this, _1));
     LAFTupdateConnection = LAFT->ConnectUpdated(boost::bind(&DRCPlugin::OnLAFTUpdate, this));
     RAFTupdateConnection = RAFT->ConnectUpdated(boost::bind(&DRCPlugin::OnRAFTUpdate, this));
     IMUupdateConnection  = IMU->ConnectUpdated(boost::bind(&DRCPlugin::OnIMUUpdate, this));
+
 }
 
-void *DRCPlugin::WorldThread(void *_arg){
-    DRCPlugin *dp = (DRCPlugin*)_arg;
-
-    static int cnt = 1;
-
-    while(1){
-        if(dp->world->IsLoaded())
-            break;
-    }
-
-    dp->world->RunBlocking(1);
-
-    usleep(1000*1000);
-    while(1){
-        usleep(20);
-        std::cout << cnt << std::endl;
-
-        if(dp->FirstRcvData){
-            if(dp->FirstRcvCnt == 0){
-                dp->model->SetGravityMode(false);
-                dp->model->SetWorldPose(math::Pose(0,0,2, 0,0,0));
-                for(int i=0; i<NO_OF_JOINTS; i++){
-                    dp->setGainOverride(i, 100, 20);
-                }
-            }else if(dp->FirstRcvCnt == 21){
-                for(int i=0; i<NO_OF_JOINTS; i++){
-                    if(i == RHAND || i == LHAND || i == RWH || i == LWH)
-                        continue;
-                    dp->refs[i] = dp->RXJointData.JointReference[i]*D2Rf;
-                }
-                dp->ref_RWH     += dp->RXJointData.JointReference[RWH]*D2Rf/5.0;
-                dp->ref_LWH     += dp->RXJointData.JointReference[LWH]*D2Rf/5.0;
-                dp->ref_RHAND   += dp->RXJointData.JointReference[RHAND]*1.4708/40/2000;
-                dp->ref_LHAND   += dp->RXJointData.JointReference[LHAND]*1.4708/40/2000;
-                if(dp->ref_RHAND>1.4708)    dp->ref_RHAND = 1.4708;
-                if(dp->ref_RHAND<0)         dp->ref_RHAND = 0;
-                if(dp->ref_LHAND>1.4708)    dp->ref_LHAND = 1.4708;
-                if(dp->ref_LHAND<0)         dp->ref_LHAND = 0;
-
-                // default offset
-                dp->refs[LEB] += -20*D2Rf;
-                dp->refs[REB] += -20*D2Rf;
-                dp->refs[RSR] += -15*D2Rf;
-                dp->refs[LSR] += 15*D2Rf;
-
-                for(int i=0; i<NO_OF_JOINTS; i++){
-                    dp->setGainOverride(i, 0, 1000);
-                }
-            }else if(dp->FirstRcvCnt == 3200){
-                if(dp->refs[RKN]*R2Df <= 140.0 || dp->refs[LKN]*R2Df <= 140.0){
-                    // Walking mode
-                    float z;
-                    try{
-                        dp->listener.waitForTransform("Body_RAFT", "Body_TORSO", ros::Time(0), ros::Duration(0.05));
-                        dp->listener.waitForTransform("Body_LAFT", "Body_TORSO", ros::Time(0), ros::Duration(0.05));
-                        dp->listener.lookupTransform("Body_RAFT", "Body_TORSO", ros::Time(0), dp->right);
-                        dp->listener.lookupTransform("Body_LAFT", "Body_TORSO", ros::Time(0), dp->left);
-                        z = (dp->left.getOrigin().z() + dp->right.getOrigin().z()) / 2.0 + 0.05;
-                        std::cout << "original : " << dp->model->GetInitialRelativePose().pos.z << std::endl;
-                        std::cout << "new one  : " << z << std::endl;
-                    }catch(tf::TransformException &ex){
-                        ROS_WARN("%s",ex.what());
-                        z = 2*0.5*cos(dp->refs[RKN]/2.0)+0.2+0.02;
-                        std::cout << "original 1: " << dp->model->GetInitialRelativePose().pos.z << std::endl;
-                        std::cout << "new one  1: " << z << std::endl;
-                    }
-                    dp->model->SetWorldPose(math::Pose(0,0,z, 0,0,0));
-                }else{
-                    // Wheel mode
-                    float z;
-                    try{
-                        dp->listener.waitForTransform("Body_TORSO", "Body_RWH", ros::Time(0), ros::Duration(0.05));
-                        dp->listener.waitForTransform("Body_TORSO", "Body_LWH", ros::Time(0), ros::Duration(0.05));
-                        dp->listener.lookupTransform("Body_TORSO", "Body_RWH", ros::Time(0), dp->right);
-                        dp->listener.lookupTransform("Body_TORSO", "Body_LWH", ros::Time(0), dp->left);
-                        z = -(dp->left.getOrigin().z() + dp->right.getOrigin().z()) / 2.0 + 0.06 + 0.05;
-                    }catch(tf::TransformException &ex){
-                        ROS_WARN("%s",ex.what());
-                        z = 0.4;
-                    }
-                    dp->setGainOverride(RKN, 100, 100);
-                    dp->setGainOverride(LKN, 100, 100);
-                    dp->model->SetWorldPose(math::Pose(0,0,z, 0,0,0));
-                }
-                dp->model->GetWorld()->GetPhysicsEngine()->SetGravity(math::Vector3(0,0,-2.9));
-                dp->model->SetGravityMode(true);
-            }else if(dp->FirstRcvCnt == 6500){
-                dp->model->GetWorld()->GetPhysicsEngine()->SetGravity(math::Vector3(0,0,-9.8));
-                dp->FirstRcvData = false;
-                dp->SimulateOk = true;
-            }
-        }
-
-        if(dp->SimulateOk){
-
-            if(cnt%5 == 1){
-                while(1){
-                    if(dp->new_ref_cnt == 1)
-                        break;
-                }
-            }
-
-            for(int i=0; i<NO_OF_JOINTS; i++){
-                if(i == RHAND || i == LHAND || i == RWH || i == LWH)
-                    continue;
-                dp->refs[i] = dp->RXJointData.JointReference[i]*D2Rf;
-            }
-
-            dp->ref_RWH     += dp->RXJointData.JointReference[RWH]*D2Rf/5.0;
-            dp->ref_LWH     += dp->RXJointData.JointReference[LWH]*D2Rf/5.0;
-            dp->ref_RHAND   += dp->RXJointData.JointReference[RHAND]*1.4708/40/2000;
-            dp->ref_LHAND   += dp->RXJointData.JointReference[LHAND]*1.4708/40/2000;
-            if(dp->ref_RHAND>1.4708)    dp->ref_RHAND = 1.4708;
-            if(dp->ref_RHAND<0)         dp->ref_RHAND = 0;
-            if(dp->ref_LHAND>1.4708)    dp->ref_LHAND = 1.4708;
-            if(dp->ref_LHAND<0)         dp->ref_LHAND = 0;
-
-            // default offset
-            dp->refs[LEB] += -20*D2Rf;
-            dp->refs[REB] += -20*D2Rf;
-            dp->refs[RSR] += -15*D2Rf;
-            dp->refs[LSR] += 15*D2Rf;
-        }
-
-
-std::cout << "move joints start" << std::endl;
-        // move joints
-        for(int i=0; i<NO_OF_JOINTS; i++){
-            if(i == RHAND || i == LHAND || i == RWH || i == LWH)
-                continue;
-            dp->JCon->SetPositionTarget(dp->JPtrs[i]->GetScopedName(),dp->refs[i]);
-        }
-        dp->JCon->SetPositionTarget(dp->JPtrs[RWH]->GetScopedName(), dp->ref_RWH);
-        dp->JCon->SetPositionTarget(dp->JPtrs[LWH]->GetScopedName(), dp->ref_LWH);
-        for(int i=0; i<9; i++){
-            dp->JCon->SetPositionTarget(dp->JPtr_RHAND[i]->GetScopedName(), dp->ref_RHAND);
-            dp->JCon->SetPositionTarget(dp->JPtr_LHAND[i]->GetScopedName(), dp->ref_LHAND);
-        }
-        dp->JCon->SetPositionTarget(dp->JPtr_RAFT->GetScopedName(),0);
-        dp->JCon->SetPositionTarget(dp->JPtr_LAFT->GetScopedName(),0);
-        dp->JCon->SetPositionTarget(dp->JPtr_RWFT->GetScopedName(),0);
-        dp->JCon->SetPositionTarget(dp->JPtr_LWFT->GetScopedName(),0);
-
-        dp->JPtr_Head->SetPosition(0, 0.0);
-        dp->JCon->Update();
-
-std::cout << "override start" << std::endl;
-        // adjust gain override
-        dp->adjustAllGain();
-
-
-std::cout << "Start Run" << std::endl;
-        dp->world->RunBlocking(1);
-        //dp->world->Step();
-std::cout << "End Run" << std::endl;
-        usleep(50);
-std::cout << "End GetRunning" << std::endl;
-        if(cnt%5==0){
-            if(dp->connectionStatus){
-                // send sensor data
-                for(int i=0; i<NO_OF_JOINTS; i++){
-                    if(i == RHAND || i == LHAND)
-                        continue;
-                    dp->TXSensorData.JointCurrentPosition[i] = dp->JPtrs[i]->GetAngle(0).Radian()*R2Df;
-
-                    if(i == RWH){
-                        dp->TXSensorData.JointCurrentPosition[i] -= dp->home_ref_RWH;
-                    }else if(i == LWH){
-                        dp->TXSensorData.JointCurrentPosition[i] -= dp->home_ref_LWH;
-                    }
-                }
-                dp->TXSensorData.JointCurrentPosition[RHAND] = (dp->JPtr_RHAND[0]->GetAngle(0).Radian())*R2Df;
-                dp->TXSensorData.JointCurrentPosition[LHAND] = (dp->JPtr_LHAND[0]->GetAngle(0).Radian())*R2Df;
-
-                // default offset
-                dp->TXSensorData.JointCurrentPosition[LEB] -= -20.0;
-                dp->TXSensorData.JointCurrentPosition[REB] -= -20.0;
-                dp->TXSensorData.JointCurrentPosition[RSR] -= -15.0;
-                dp->TXSensorData.JointCurrentPosition[LSR] -= 15.0;
-
-                common::Time simTime = dp->world->GetSimTime();
-                ros::Time rosTime = ros::Time::now();
-
-                dp->TXSensorData.Sim_Time.sec = simTime.sec;
-                dp->TXSensorData.Sim_Time.nsec = simTime.nsec;
-                dp->TXSensorData.ROS_Time.sec = rosTime.sec;
-                dp->TXSensorData.ROS_Time.nsec = rosTime.nsec;
-                write(dp->sock, &(dp->TXSensorData), sizeof(dp->TXSensorData));
-
-                dp->new_ref_cnt = 0;
-            }
-        }
-
-        cnt++;
-        dp->FirstRcvCnt++;
-    }
-}
 
 void DRCPlugin::OnUpdate(const common::UpdateInfo &){
     static int cnt = 0;
@@ -520,8 +319,7 @@ void DRCPlugin::OnUpdate(const common::UpdateInfo &){
     JCon->SetPositionTarget(JPtr_RWFT->GetScopedName(),0);
     JCon->SetPositionTarget(JPtr_LWFT->GetScopedName(),0);
 
-    //JPtr_Head->SetPosition(0, 0.0);
-    JCon->SetPositionTarget(JPtr_Head->GetScopedName(),0.0);
+    JPtr_Head->SetPosition(0, 0.0);
     JCon->Update();
 
     // adjust gain override
@@ -589,13 +387,10 @@ void DRCPlugin::OnUpdate(const common::UpdateInfo &){
             TXSensorData.ROS_Time.sec = rosTime.sec;
             TXSensorData.ROS_Time.nsec = rosTime.nsec;
             write(sock, &TXSensorData, sizeof(TXSensorData));
-
-            //model->GetWorld()->Stop();
         }
     }
     cnt++;
     FirstRcvCnt++;
-
 }
 
 
@@ -703,8 +498,7 @@ void DRCPlugin::NewRXData(){
         inc_refs[i] = (RXJointData.JointReference[i]*D2Rf-prev_refs[i])/5.0;
     }
 
-    new_ref_cnt = 1;
-    //model->GetWorld()->SetPaused(false);
+    new_ref_cnt = 0;
 }
 
 

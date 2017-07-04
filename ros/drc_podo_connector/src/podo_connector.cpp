@@ -175,7 +175,7 @@ int main(int argc, char **argv)
 
     // Create Socket ---------------------
     FILE *fpNet = NULL;
-    fpNet = fopen("/home/rainbow/catkin_ws/src/drc_hubo/ros/settings/network.txt", "r");
+    fpNet = fopen("~/catkin_ws/src/drc_hubo/ros/settings/network.txt", "r");
     if(fpNet == NULL){
         std::cout << ">>> Network File Open Error..!!" << std::endl;
         sprintf(ip, PODO_ADDR);
