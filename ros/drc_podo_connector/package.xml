@@ -4,10 +4,12 @@
   <version>0.1.0</version>
   <description>The drc_podo_connector package</description>
 
-  <maintainer email="yjs0497@kaist.ac.kr">JeongsooLim</maintainer>
+  <maintainer email="jslim@rainbow.re.kr">JeongsooLim</maintainer>
+  <maintainer email="seungwoohong@kaist.ac.kr">SeungwooHong</maintainer>
   <license>BSD</license>
   <url type="website">http://wiki.ros.org/drc_hubo</url>
-  <author email="yjs0497@kaist.ac.kr">JeongsooLim</author>
+  <author email="jslim@rainbow.re.kr">JeongsooLim</author>
+  <author email="seungwoohong@kaist.ac.kr">SeungwooHong</author>
 
 
   <!-- The *_depend tags are used to specify dependencies -->
